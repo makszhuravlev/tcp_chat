@@ -9,7 +9,7 @@ private:
 	pqxx::connection *c;
 public:
 	DB();
-}; 
+};  
 
 
 void test();
