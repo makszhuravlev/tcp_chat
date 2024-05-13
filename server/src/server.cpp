@@ -36,7 +36,7 @@ int main()
 	recv(clientSocket, buffer, sizeof(buffer), 0); 
 	cout << "Message from client: " << buffer 
 			<< endl; 
-
+	test();
 	// closing the socket. 
 	close(serverSocket); 
 
