@@ -1,1 +1,0 @@
-/usr/bin/g++ -g CMakeFiles/server.dir/src/main.cpp.o -o server  -lpq -lpqxx 
