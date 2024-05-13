@@ -35,3 +35,4 @@
 
 build/*
 server/build/*
+client/build/*
