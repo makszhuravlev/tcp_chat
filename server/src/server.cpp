@@ -5,6 +5,8 @@
 #include <netinet/in.h> 
 #include <sys/socket.h> 
 #include <unistd.h> 
+#include "db.hpp"
+
 
 using namespace std; 
 

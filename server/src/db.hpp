@@ -1,9 +1,11 @@
+#pragma once
+#ifndef DB_MANAGER
+#define DB_MANAGER
 #include<iostream>
 #include<pqxx/pqxx>
 
 
-int main()
-{
+bool test(){
     try
     {
         pqxx::connection *c;
@@ -25,3 +27,5 @@ int main()
         return 1;
     }
 }
+
+#endif
