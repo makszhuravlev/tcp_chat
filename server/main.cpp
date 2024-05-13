@@ -1,50 +1,68 @@
 #include <async-sockets/tcpserver.hpp>
 #include <iostream>
+#include "DB.hpp"
 
 using namespace std;
 
+struct command{
+	int userID;
+	string action;
+};
+
+std::vector<string> split(string s, string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    string token;
+    vector<string> res;
+
+    while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
+        token = s.substr (pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back (token);
+    }
+
+    res.push_back (s.substr (pos_start));
+    return res;
+}
+
+
+void messageManager(string message){
+	string delimeter = ";";
+	vector<string> temp = split(message, delimeter);
+	command* cmd = new command;
+	cmd->userID=stoi(temp[0]);
+	cmd->action=temp[1];
+	cout << cmd->userID << endl;
+	cout << cmd->action << endl;
+}
+
+
 int main()
 {
-    // Initialize server socket..
     TCPServer<> tcpServer;
 
-    // When a new client connected:
     tcpServer.onNewConnection = [&](TCPSocket<> *newClient) {
         cout << "New client: [";
         cout << newClient->remoteAddress() << ":" << newClient->remotePort() << "]" << endl;
 
         newClient->onMessageReceived = [newClient](string message) {
             cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << endl;
-            newClient->Send("OK!");
+	    messageManager(message);
         };
-        
-        // If you want to use raw bytes
-        /*
-        newClient->onRawMessageReceived = [newClient](const char* message, int length) {
-            cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << "(" << length << ")" << endl;
-            newClient->Send("OK!");
-        };
-        */
-        
+
         newClient->onSocketClosed = [newClient](int errorCode) {
             cout << "Socket closed:" << newClient->remoteAddress() << ":" << newClient->remotePort() << " -> " << errorCode << endl;
             cout << flush;
         };
     };
 
-    // Bind the server to a port.
     tcpServer.Bind(8080, [](int errorCode, string errorMessage) {
-        // BINDING FAILED:
         cout << errorCode << " : " << errorMessage << endl;
     });
 
-    // Start Listening the server.
     tcpServer.Listen([](int errorCode, string errorMessage) {
-        // LISTENING FAILED:
         cout << errorCode << " : " << errorMessage << endl;
     });
 
-    // You should do an input loop, so the program won't terminate immediately
     string input;
     getline(cin, input);
     while (input != "exit")
@@ -52,7 +70,6 @@ int main()
         getline(cin, input);
     }
 
-    // Close the server before exiting the program.
     tcpServer.Close();
 
     return 0;

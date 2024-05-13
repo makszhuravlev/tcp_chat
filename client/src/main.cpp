@@ -22,7 +22,7 @@ int main()
 			sizeof(serverAddress)); 
 
 	// sending data 
-	const char* message = "Hello, server!"; 
+	const char* message = "1;read"; 
 	send(clientSocket, message, strlen(message), 0); 
 
 	// closing socket 
