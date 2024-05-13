@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/server.dir/main.cpp.o -o server  -lpq -lpqxx 

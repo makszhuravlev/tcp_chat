@@ -6,14 +6,18 @@ int main()
 {
     try
     {
-        pqxx::connection c;
-        pqxx::work w(c);
-
-        pqxx::row r = w.exec1("SELECT 1");
-
-        w.commit();
-
-        std::cout << r[0].as<int>() << std::endl;
+        pqxx::connection *c;
+	c = new pqxx::connection("host=localhost user=nyashka password=cmd dbname = chat port=5432");
+	std::cout << "[SUCCESS] DB CONNECTION" << std::endl;
+	pqxx::work w(*c);
+	pqxx::result result = w.exec("SELECT * FROM chats");
+	w.commit();
+	for(auto res : result){
+		for(auto r : res){
+			std::cout << r << " ";
+		}
+		std::cout << std::endl;
+	}
     }
     catch (std::exception const &e)
     {
