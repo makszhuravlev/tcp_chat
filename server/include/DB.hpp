@@ -12,7 +12,9 @@ public:
 };
 
 
-void test(){
+void test();
+/*
+{
     try
     {
         pqxx::connection *c;
@@ -33,5 +35,5 @@ void test(){
         std::cerr << e.what() << std::endl;
     }
 }
-
+*/
 

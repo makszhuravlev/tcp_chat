@@ -1,0 +1,3 @@
+/home/nyashka/Documents/tcp_chat/client/build/CMakeFiles/client.dir
+/home/nyashka/Documents/tcp_chat/client/build/CMakeFiles/edit_cache.dir
+/home/nyashka/Documents/tcp_chat/client/build/CMakeFiles/rebuild_cache.dir
