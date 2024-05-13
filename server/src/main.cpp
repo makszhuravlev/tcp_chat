@@ -1,6 +1,7 @@
 #include<iostream>
 #include<pqxx/pqxx>
-int a = 10;
+
+
 int main()
 {
     try
