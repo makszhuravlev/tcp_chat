@@ -26,7 +26,7 @@ int main()
 	send(clientSocket, message, strlen(message), 0); 
 
 	// closing socket 
-	close(clientSocket); 
+	close(clientSocket);
 
 	return 0; 
 }
