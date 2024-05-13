@@ -7,7 +7,7 @@ int main()
     try
     {
         pqxx::connection *c;
-	c = new pqxx::connection("host=localhost user=nyashka password=cmd dbname = chat port=5432");
+	c = new pqxx::connection("host=217.197.240.93 user=nyashka password=cmd dbname = chat port=5432");
 	std::cout << "[SUCCESS] DB CONNECTION" << std::endl;
 	pqxx::work w(*c);
 	pqxx::result result = w.exec("SELECT * FROM chats");
