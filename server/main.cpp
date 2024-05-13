@@ -1,44 +1,59 @@
-// C++ program to show the example of server application in 
-// socket programming 
-#include <cstring> 
-#include <iostream> 
-#include <netinet/in.h> 
-#include <sys/socket.h> 
-#include <unistd.h> 
-#include "DB.hpp"
+#include <async-sockets/tcpserver.hpp>
+#include <iostream>
 
+using namespace std;
 
-using namespace std; 
+int main()
+{
+    // Initialize server socket..
+    TCPServer<> tcpServer;
 
-int main() 
-{ 
-	// creating socket 
-	int serverSocket = socket(AF_INET, SOCK_STREAM, 0); 
+    // When a new client connected:
+    tcpServer.onNewConnection = [&](TCPSocket<> *newClient) {
+        cout << "New client: [";
+        cout << newClient->remoteAddress() << ":" << newClient->remotePort() << "]" << endl;
 
-	// specifying the address 
-	sockaddr_in serverAddress; 
-	serverAddress.sin_family = AF_INET; 
-	serverAddress.sin_port = htons(8080); 
-	serverAddress.sin_addr.s_addr = INADDR_ANY; 
+        newClient->onMessageReceived = [newClient](string message) {
+            cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << endl;
+            newClient->Send("OK!");
+        };
+        
+        // If you want to use raw bytes
+        /*
+        newClient->onRawMessageReceived = [newClient](const char* message, int length) {
+            cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << "(" << length << ")" << endl;
+            newClient->Send("OK!");
+        };
+        */
+        
+        newClient->onSocketClosed = [newClient](int errorCode) {
+            cout << "Socket closed:" << newClient->remoteAddress() << ":" << newClient->remotePort() << " -> " << errorCode << endl;
+            cout << flush;
+        };
+    };
 
-	// binding socket. 
-	bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)); 
+    // Bind the server to a port.
+    tcpServer.Bind(8080, [](int errorCode, string errorMessage) {
+        // BINDING FAILED:
+        cout << errorCode << " : " << errorMessage << endl;
+    });
 
-	// listening to the assigned socket 
-	listen(serverSocket, 5); 
+    // Start Listening the server.
+    tcpServer.Listen([](int errorCode, string errorMessage) {
+        // LISTENING FAILED:
+        cout << errorCode << " : " << errorMessage << endl;
+    });
 
-	// accepting connection request 
-	int clientSocket 
-		= accept(serverSocket, nullptr, nullptr); 
+    // You should do an input loop, so the program won't terminate immediately
+    string input;
+    getline(cin, input);
+    while (input != "exit")
+    {
+        getline(cin, input);
+    }
 
-	// recieving data 
-	char buffer[1024] = { 0 }; 
-	recv(clientSocket, buffer, sizeof(buffer), 0); 
-	cout << "Message from client: " << buffer 
-			<< endl; 
-	test();
-	// closing the socket. 
-	close(serverSocket); 
+    // Close the server before exiting the program.
+    tcpServer.Close();
 
-	return 0; 
+    return 0;
 }
