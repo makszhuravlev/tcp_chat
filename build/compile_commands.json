@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/Artem/vscode/tcp_chat/build",
+  "command": "/usr/bin/g++  -I/home/Artem/vscode/tcp_chat/server/src -g -o CMakeFiles/server.dir/src/main.cpp.o -c /home/Artem/vscode/tcp_chat/server/src/main.cpp",
+  "file": "/home/Artem/vscode/tcp_chat/server/src/main.cpp"
+}
+]

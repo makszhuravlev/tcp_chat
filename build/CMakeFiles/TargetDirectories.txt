@@ -1,0 +1,3 @@
+/home/Artem/vscode/tcp_chat/build/CMakeFiles/rebuild_cache.dir
+/home/Artem/vscode/tcp_chat/build/CMakeFiles/edit_cache.dir
+/home/Artem/vscode/tcp_chat/build/CMakeFiles/server.dir
