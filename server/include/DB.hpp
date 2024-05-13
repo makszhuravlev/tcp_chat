@@ -8,7 +8,7 @@ class DB
 private:
 	pqxx::connection *c;
 public:
-	DB();
+	DB(); 
 };  
 
 
