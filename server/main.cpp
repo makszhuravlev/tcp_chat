@@ -1,11 +1,12 @@
 #include "include/tcpserver.hpp"
 #include <iostream>
-#include "DB.hpp"
+#include "DBManager.hpp"
+
 
 int main()
 {
-    //DB db;
-    DB::connect();
+    //DBManager db;
+    DBManager::connect();
     TCPServer<> tcpServer;
 
     tcpServer.onNewConnection = [&](TCPSocket<> *newClient) {
@@ -13,7 +14,7 @@ int main()
 
         newClient->onMessageReceived = [newClient](std::string message) {
             std::cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << std::endl;
-            std::string send_m = DB::messageManager(message);
+            std::string send_m = DBManager::messageManager(message);
             newClient->Send(send_m);
         };
 

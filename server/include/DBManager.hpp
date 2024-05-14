@@ -11,20 +11,20 @@ struct command{
     std::string action;
 };
 
-class DB
+class DBManager
 {
 private:
     static pqxx::connection *c;
 public:
-    DB(); 
-    ~DB();
-    DB( const DB& ) = delete;  
-    DB& operator=( DB& ) = delete;
+    DBManager(); 
+    ~DBManager();
+    DBManager( const DBManager& ) = delete;  
+    DBManager& operator=( DBManager& ) = delete;
 
     static void connect();
     void disconnect();
 
-    //static DB * getInstance();
+    //static DBManager * getInstance();
     static pqxx::connection* getConnection();
     static std::string select_from_chat(command* cmd);
     //void test();

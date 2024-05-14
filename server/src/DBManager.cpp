@@ -1,43 +1,43 @@
-#include "DB.hpp"
+#include "DBManager.hpp"
 
-//DB* DB::p_instance = nullptr;
-pqxx::connection* DB::c = nullptr;
+//DBManager* DBManager::p_instance = nullptr;
+pqxx::connection* DBManager::c = nullptr;
 
-DB::DB()
+DBManager::DBManager()
 {
     /*
     assert(p_instance == nullptr);
     p_instance = this;
     */
-    DB::connect();
-    std::cout << "[SUCCESS] DB INITIALIZED" << std::endl;
+    DBManager::connect();
+    std::cout << "[SUCCESS] DBManager INITIALIZED" << std::endl;
 }
 
-DB::~DB()
+DBManager::~DBManager()
 {
     disconnect();
-    delete DB::c;
+    delete DBManager::c;
 }
 
-void DB::connect(){
+void DBManager::connect(){
     try{
-        DB::c = new pqxx::connection("host=217.197.240.93 user=nyashka password=cmd dbname = chat port=5432");
-        std::cout << "[SUCCESS] DB CONNECTED" << std::endl;
+        DBManager::c = new pqxx::connection("host=217.197.240.93 user=nyashka password=cmd dbname = chat port=5432");
+        std::cout << "[SUCCESS] DBManager CONNECTED" << std::endl;
     }
     catch(std::exception const &e){
         std::cerr << e.what() << std::endl;
     }
 }
 
-void DB::disconnect(){
+void DBManager::disconnect(){
     c->close();
 }
 
-std::string DB::select_from_chat(command* cmd){
+std::string DBManager::select_from_chat(command* cmd){
     std::cout << "Starting receive process" << std::endl;
     std::string result = "err";
     try{
-        pqxx::connection* conn = DB::getConnection();
+        pqxx::connection* conn = DBManager::getConnection();
         if (conn) {
             pqxx::work w(*conn);
             pqxx::result result_query = w.exec("SELECT * FROM chats");
@@ -65,18 +65,18 @@ std::string DB::select_from_chat(command* cmd){
 }
 
 /*
-DB *DB::getInstance() {
-    if(!DB::p_instance)           
-        p_instance = new DB();
-    return DB::p_instance;
+DBManager *DBManager::getInstance() {
+    if(!DBManager::p_instance)           
+        p_instance = new DBManager();
+    return DBManager::p_instance;
 }
 */
 
-pqxx::connection* DB::getConnection(){
+pqxx::connection* DBManager::getConnection(){
     return c;
 }
 
-std::vector<std::string> DB::splitMessage(std::string s, std::string delimiter) {
+std::vector<std::string> DBManager::splitMessage(std::string s, std::string delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     std::string token;
     std::vector<std::string> res;
@@ -91,8 +91,8 @@ std::vector<std::string> DB::splitMessage(std::string s, std::string delimiter) 
     return res;
 }
 
-std::string DB::messageManager(std::string message){
-    std::vector<std::string> temp = DB::splitMessage(message);
+std::string DBManager::messageManager(std::string message){
+    std::vector<std::string> temp = DBManager::splitMessage(message);
     command* cmd = new command;
 
     cmd->userID=stoi(temp[0]);
@@ -100,7 +100,7 @@ std::string DB::messageManager(std::string message){
     std::cout << cmd->userID << std::endl;
     std::cout << cmd->action << std::endl;
 
-    std::string response = DB::select_from_chat(cmd);
+    std::string response = DBManager::select_from_chat(cmd);
     delete cmd;
 
     return response;

@@ -1,0 +1,8 @@
+{
+ "ipAddress": "217.197.240.93",
+ "port": 5432,
+ "username": "nyashka",
+ "password": "cmd",
+ "database": "testdb",
+ "timeout": 10000
+}
