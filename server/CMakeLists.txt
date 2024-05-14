@@ -11,4 +11,4 @@ set(CMAKE_CXX_STANDARD REQUIRED)
 #find_package(libpqxx REQUIRED)
 find_package(PostgreSQL REQUIRED)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC  pq pqxx)
+target_link_libraries(${PROJECT_NAME} PUBLIC  pq pqxx pthread)
