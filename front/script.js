@@ -116,3 +116,19 @@ window.onload = function() {
     loadChatList();
     loadChatMessages(currentChatId);
 };
+
+document.getElementById('settingsButton').addEventListener('click', function() {
+    document.getElementById('settingsModal').style.display = 'flex'; // Убедитесь, что здесь 'flex', а не 'block'
+});
+
+document.querySelector('.close-button').addEventListener('click', function() {
+    document.getElementById('settingsModal').style.display = 'none';
+});
+
+
+// Закрывает модальное окно при клике вне его
+window.onclick = function(event) {
+    if (event.target == document.getElementById('settingsModal')) {
+        document.getElementById('settingsModal').style.display = 'none';
+    }
+}
