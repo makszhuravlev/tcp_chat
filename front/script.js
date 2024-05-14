@@ -4,7 +4,7 @@ document.getElementById('sendButton').addEventListener('click', function() {
 
     if (message !== '') {
         const messageContainer = document.createElement('div');
-        messageContainer.classList.add('message', 'sent');
+        messageContainer.classList.add('message-sent', 'sent');
         messageContainer.textContent = message;
 
         document.querySelector('.messages').appendChild(messageContainer);
