@@ -210,7 +210,25 @@ body {
   resize: none; /* Отключает возможность изменения размера пользователем */
   overflow-y: auto; /* Добавляет вертикальную прокрутку при необходимости */
 }
+.message-input textarea::-webkit-scrollbar {
+  width: 8px; /* ширина полосы прокрутки */
+}
 
+.message-input textarea::-webkit-scrollbar-track {
+  background: #2e335a; /* цвет дорожки */
+}
+
+.message-input textarea::-webkit-scrollbar-thumb {
+  background-color: #7b61ff; /* цвет самой полосы прокрутки */
+  border-radius: 10px;
+  border: 2px solid #2e335a;
+}
+
+/* Стилизация для Firefox */
+.message-input textarea {
+  scrollbar-width: thin;
+  scrollbar-color: #7b61ff #2e335a;
+}
 .message-input textarea:focus {
   outline: none;
 }
@@ -275,5 +293,5 @@ body {
 
   .message {
     max-width: 80%;
-  }
-}
+  }}  
+
