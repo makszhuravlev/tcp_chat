@@ -17,7 +17,10 @@ public:
 	DB(); 
 	void test();
 	pqxx::connection* getCon();
-	static std::string select_from_chat(command* cmd, pqxx::connection* c);
+	pqxx::connection* connect();
+	void disconnect(pqxx::connection* c);
+	std::string select_from_chat(command* cmd, pqxx::connection* c);
+	std::string select_from_chat(command* cmd);
 };  
 
 

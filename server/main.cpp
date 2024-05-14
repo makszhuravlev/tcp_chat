@@ -31,7 +31,7 @@ string messageManager(string message){
 	cmd->action=temp[1];
 	cout << cmd->userID << endl;
 	cout << cmd->action << endl;
-	return db.select_from_chat(cmd, db.getCon());
+	return db.select_from_chat(cmd);
 }
 
 
