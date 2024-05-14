@@ -60,14 +60,22 @@ function loadChatMessages(chatId) {
     if (chat) {
         chat.messages.forEach(message => {
             const messageContainer = document.createElement('div');
-            messageContainer.classList.add(`message-${message.sender}`);
             messageContainer.textContent = message.text;
+
+            // Добавляем классы в зависимости от отправителя сообщения
+            if (message.sender === "received") {
+                messageContainer.classList.add('message', 'message-received');
+            } else if (message.sender === "sent") {
+                messageContainer.classList.add('message', 'message-sent');
+            }
+
             messagesElement.appendChild(messageContainer);
         });
     }
+    scrollToBottom();
 }
 
-document.getElementById('sendButton').addEventListener('click', function() {
+function sendMessage() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
 
@@ -78,13 +86,29 @@ document.getElementById('sendButton').addEventListener('click', function() {
             chat.messages.push({"sender": "sent", "text": message});
 
             const messageContainer = document.createElement('div');
-            messageContainer.classList.add('message-sent', 'sent');
+            messageContainer.classList.add('message', 'message-sent', 'sent');
             messageContainer.textContent = message;
 
             document.querySelector('.messages').appendChild(messageContainer);
             input.value = '';
             input.focus();
+
+            scrollToBottom();
         }
+    }
+}
+
+function scrollToBottom() {
+    const messagesElement = document.getElementById('messages');
+    messagesElement.scrollTop = messagesElement.scrollHeight;
+}
+
+document.getElementById('sendButton').addEventListener('click', sendMessage);
+
+document.getElementById('messageInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // Предотвращает создание новой строки
+        sendMessage();
     }
 });
 
