@@ -6,6 +6,26 @@
 #include <sys/socket.h> 
 #include <unistd.h> 
 
+
+std::string receiveDataFromServer(int sockfd) {
+    std::string receivedData;
+
+    // Buffer to store the received data
+    char buffer[1024] = {0};
+
+    // Receive data from the server
+    ssize_t bytesRead = recv(sockfd, buffer, sizeof(buffer) - 1, 0);
+    if (bytesRead > 0) {
+        // Append the received data to the string
+        receivedData.append(buffer, bytesRead);
+    } else {
+        std::cerr << "Failed to receive data" << std::endl;
+    }
+
+    return receivedData;
+}
+
+
 int main() 
 { 
 	// creating socket 
@@ -25,6 +45,10 @@ int main()
 	const char* message = "1;read"; 
 	send(clientSocket, message, strlen(message), 0); 
 
+	
+	std::string rec_message = receiveDataFromServer(clientSocket);
+	std::cout << rec_message << std::endl;
+	
 	// closing socket 
 	close(clientSocket);
 
