@@ -80,6 +80,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 75%;
 }
 
 .chat-header {
@@ -126,14 +127,35 @@ body {
   padding: 10px;
   border-radius: 10px;
   margin: 10px 0;
-  max-width: 60%;
   word-wrap: break-word;
+  width: fit-content; /* Подгоняет ширину под содержимое */
+  max-width: 80%; /* Максимальная ширина для соответствия стилю */
 }
 
-.message.sent {
-  background-color: #7b61ff;
-  align-self: flex-end;
+.message-received {
+  background-color: #4b4c72;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  word-wrap: break-word;
+  width: fit-content; /* Подгоняет ширину под содержимое */
+  max-width: 80%; /* Максимальная ширина для соответствия стилю */
+  align-self: flex-start; /* Выравниваем полученные сообщения слева */
 }
+
+.message-sent {
+  background-color: #4b4c72;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+  word-wrap: break-word;
+  width: fit-content; /* Подгоняет ширину под содержимое */
+  max-width: 80%; /* Максимальная ширина для соответствия стилю */
+  background-color: #7b61ff;
+  align-self: flex-end; /* Выравниваем отправленные сообщения справа */
+}
+
+
 
 .message-input {
   display: flex;
@@ -172,6 +194,22 @@ body {
   background-color: #6754d6;
 }
 
+.message-input textarea {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 30px;
+  margin-right: 10px;
+  color: #ffffff;
+  background-color: #4b4c72;
+  font-size: 1em;
+  resize: none; /* Отключает возможность изменения размера пользователем */
+  overflow-y: auto; /* Добавляет вертикальную прокрутку при необходимости */
+}
+
+.message-input textarea:focus {
+  outline: none;
+}
 
 @media (max-width: 1024px) {
   .chat-list {
@@ -207,7 +245,7 @@ body {
   }
 
   .message {
-    max-width: 80%;
+    max-width: 100%;
   }
 
   .chat-header-name {
@@ -232,6 +270,6 @@ body {
   }
 
   .message {
-    max-width: 90%;
+    max-width: 80%;
   }
 }
