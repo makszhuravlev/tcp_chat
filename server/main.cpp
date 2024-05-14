@@ -25,7 +25,7 @@ std::vector<string> split(string s, string delimiter) {
 }
 
 
-void messageManager(string message){
+string messageManager(string message){
 	string delimeter = ";";
 	vector<string> temp = split(message, delimeter);
 	command* cmd = new command;
@@ -33,6 +33,7 @@ void messageManager(string message){
 	cmd->action=temp[1];
 	cout << cmd->userID << endl;
 	cout << cmd->action << endl;
+	return "null";
 }
 
 
@@ -46,7 +47,8 @@ int main()
 
         newClient->onMessageReceived = [newClient](string message) {
             cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << endl;
-	    messageManager(message);
+	    string send_m = messageManager(message);
+	    newClient->Send(send_m);
         };
 
         newClient->onSocketClosed = [newClient](int errorCode) {
