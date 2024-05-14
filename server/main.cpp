@@ -2,49 +2,44 @@
 #include <iostream>
 #include "DB.hpp"
 
-//testing
-
-using namespace std;
-
-
-
 int main()
 {
-    DB db;
+    //DB db;
+    DB::connect();
     TCPServer<> tcpServer;
 
     tcpServer.onNewConnection = [&](TCPSocket<> *newClient) {
-        cout << "New client: [";
-        cout << newClient->remoteAddress() << ":" << newClient->remotePort() << "]" << endl;
+        std::cout << "New client: [" << newClient->remoteAddress() << ":" << newClient->remotePort() << "]" << std::endl;
 
-        newClient->onMessageReceived = [newClient](string message) {
-            cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << endl;
-	    string send_m = DB::getInstance()->messageManager(message);
-	    newClient->Send(send_m);
+        newClient->onMessageReceived = [newClient](std::string message) {
+            std::cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << std::endl;
+            std::string send_m = DB::messageManager(message);
+            newClient->Send(send_m);
         };
 
         newClient->onSocketClosed = [newClient](int errorCode) {
-            cout << "Socket closed:" << newClient->remoteAddress() << ":" << newClient->remotePort() << " -> " << errorCode << endl;
-            cout << flush;
+            std::cout << "Socket closed:" << newClient->remoteAddress() << ":" << newClient->remotePort() << " -> " << errorCode << std::endl;
+            std::cout << std::flush;
         };
     };
 
-    tcpServer.Bind(8080, [](int errorCode, string errorMessage) {
-        cout << errorCode << " : " << errorMessage << endl;
+    tcpServer.Bind(8080, [](int errorCode, std::string errorMessage) {
+        std::cout << errorCode << " : " << errorMessage << std::endl;
     });
 
-    tcpServer.Listen([](int errorCode, string errorMessage) {
-        cout << errorCode << " : " << errorMessage << endl;
+    tcpServer.Listen([](int errorCode, std::string errorMessage) {
+        std::cout << errorCode << " : " << errorMessage << std::endl;
     });
 
-    string input;
-    getline(cin, input);
-    while (input != "exit")
+    std::string input;
+    getline(std::cin, input);
+    while (input!= "exit")
     {
-        getline(cin, input);
+        getline(std::cin, input);
     }
 
     tcpServer.Close();
 
     return 0;
 }
+

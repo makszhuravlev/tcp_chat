@@ -7,34 +7,29 @@
 #include <vector>
 
 struct command{
-	int userID;
-	std::string action;
+    int userID;
+    std::string action;
 };
 
 class DB
 {
 private:
-	static DB *p_instance;
-	pqxx::connection *c;
+    static pqxx::connection *c;
 public:
-	DB(); 
-	~DB();
+    DB(); 
+    ~DB();
     DB( const DB& ) = delete;  
     DB& operator=( DB& ) = delete;
 
-	void connect();
-	void disconnect();
+    static void connect();
+    void disconnect();
 
-	static DB * getInstance();
-	pqxx::connection* getConnection();
-	std::string select_from_chat(command* cmd, pqxx::connection* c);
-	std::string select_from_chat(command* cmd);
-	void test();
+    //static DB * getInstance();
+    static pqxx::connection* getConnection();
+    static std::string select_from_chat(command* cmd);
+    //void test();
 
-	std::vector<std::string> splitMessage(std::string s, std::string delimeter = ";");
-	std::string messageManager(std::string message);
-};  
-
-
-
+    static std::vector<std::string> splitMessage(std::string s, std::string delimeter = ";");
+    static std::string messageManager(std::string message);
+};
 
