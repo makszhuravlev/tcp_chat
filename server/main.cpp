@@ -4,11 +4,6 @@
 
 using namespace std;
 
-struct command{
-	int userID;
-	string action;
-};
-
 std::vector<string> split(string s, string delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     string token;
@@ -26,6 +21,7 @@ std::vector<string> split(string s, string delimiter) {
 
 
 string messageManager(string message){
+	DB db;
 	string delimeter = ";";
 	vector<string> temp = split(message, delimeter);
 	command* cmd = new command;
@@ -33,7 +29,7 @@ string messageManager(string message){
 	cmd->action=temp[1];
 	cout << cmd->userID << endl;
 	cout << cmd->action << endl;
-	return "null";
+	return db.select_from_chat(cmd, db.getCon());
 }
 
 
