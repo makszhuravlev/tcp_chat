@@ -1,14 +1,94 @@
+const chatData = [
+    {
+        "id": 1,
+        "name": "Лох лохов",
+        "messages": [
+            {"sender": "received", "text": "почему?"},
+            {"sender": "sent", "text": "покачену"}
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Другой чат",
+        "messages": [
+            {"sender": "received", "text": "Привет!"},
+            {"sender": "sent", "text": "Здравствуй!"}
+        ]
+    }
+];
+
+let currentChatId = 1;
+
+function loadChatList() {
+    const chatListElement = document.getElementById('chatList');
+    chatListElement.innerHTML = '';
+
+    chatData.forEach(chat => {
+        const chatItem = document.createElement('div');
+        chatItem.classList.add('chat-item');
+        chatItem.setAttribute('data-chat-id', chat.id);
+
+        const chatAvatar = document.createElement('div');
+        chatAvatar.classList.add('chat-avatar');
+
+        const chatInfo = document.createElement('div');
+        chatInfo.classList.add('chat-info');
+
+        const chatName = document.createElement('div');
+        chatName.classList.add('chat-name');
+        chatName.textContent = chat.name;
+
+        chatInfo.appendChild(chatName);
+        chatItem.appendChild(chatAvatar);
+        chatItem.appendChild(chatInfo);
+
+        chatItem.addEventListener('click', () => {
+            currentChatId = chat.id;
+            loadChatMessages(currentChatId);
+        });
+
+        chatListElement.appendChild(chatItem);
+    });
+}
+
+function loadChatMessages(chatId) {
+    const messagesElement = document.getElementById('messages');
+    messagesElement.innerHTML = '';
+
+    const chat = chatData.find(c => c.id === chatId);
+
+    if (chat) {
+        chat.messages.forEach(message => {
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add(`message-${message.sender}`);
+            messageContainer.textContent = message.text;
+            messagesElement.appendChild(messageContainer);
+        });
+    }
+}
+
 document.getElementById('sendButton').addEventListener('click', function() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
 
     if (message !== '') {
-        const messageContainer = document.createElement('div');
-        messageContainer.classList.add('message-sent', 'sent');
-        messageContainer.textContent = message;
+        const chat = chatData.find(c => c.id === currentChatId);
 
-        document.querySelector('.messages').appendChild(messageContainer);
-        input.value = '';
-        input.focus();
+        if (chat) {
+            chat.messages.push({"sender": "sent", "text": message});
+
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-sent', 'sent');
+            messageContainer.textContent = message;
+
+            document.querySelector('.messages').appendChild(messageContainer);
+            input.value = '';
+            input.focus();
+        }
     }
 });
+
+window.onload = function() {
+    loadChatList();
+    loadChatMessages(currentChatId);
+};
