@@ -6,6 +6,7 @@ include_directories("src")
 file(GLOB_RECURSE CLIENT_SOURCES "src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${CLIENT_SOURCES})
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD REQUIRED)
 
