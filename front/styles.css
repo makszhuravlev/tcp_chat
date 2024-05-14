@@ -120,6 +120,8 @@ body {
   padding: 20px;
   overflow-y: auto;
   background-color: #1f2145;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
@@ -133,28 +135,30 @@ body {
 }
 
 .message-received {
-  background-color: #4b4c72;
+
   padding: 10px;
   border-radius: 10px;
   margin: 10px 0;
   word-wrap: break-word;
-  width: fit-content; /* Подгоняет ширину под содержимое */
-  max-width: 80%; /* Максимальная ширина для соответствия стилю */
   align-self: flex-start; /* Выравниваем полученные сообщения слева */
+  background-color: #4b4c72;
 }
 
 .message-sent {
-  background-color: #4b4c72;
+  align-self: flex-end; /* Выравниваем отправленные сообщения справа */
+  background-color: #7b61ff;
+}
+
+.message-sent {
+  background-color: #7b61ff;
   padding: 10px;
   border-radius: 10px;
   margin: 10px 0;
   word-wrap: break-word;
-  width: fit-content; /* Подгоняет ширину под содержимое */
-  max-width: 80%; /* Максимальная ширина для соответствия стилю */
-  background-color: #7b61ff;
-  align-self: flex-end; /* Выравниваем отправленные сообщения справа */
+  width: fit-content;
+  max-width: 80%;
+  align-self: flex-end;
 }
-
 
 
 .message-input {
