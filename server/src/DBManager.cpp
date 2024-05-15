@@ -4,14 +4,14 @@
 using json = nlohmann::json;
 
 
-DBManager::DBManager(): c(nullptr)
+DBManager::DBManager()
 {
-
+	connect();
 }
 
 DBManager::~DBManager()
 {
-    delete c;
+    disconnect();
 }
 
 
@@ -20,7 +20,7 @@ void DBManager::connect(){
 	std::string json_data = parseJSON_to_string(SERVERINFOJSON_PATH); 
 	json serverJSON = json::parse(json_data);
 	std::string connection_info = "host="+serverJSON["ipAddress"].get<std::string>()+" port="+std::to_string((int)serverJSON["port"])+" user="+serverJSON["username"].get<std::string>()+" password="+serverJSON["password"].get<std::string>()+" dbname="+serverJSON["database"].get<std::string>();
-        DBManager::c = new pqxx::connection(connection_info);
+        c = new pqxx::connection(connection_info);
         std::cout << "[SUCCESS] DBManager CONNECTED" << std::endl;
     }
     catch(std::exception const &e){

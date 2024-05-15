@@ -20,20 +20,18 @@ class DBManager
 {
 private:
     pqxx::connection *c;
-    
-
+    void connect();    
+    void disconnect();
 public:
     DBManager(); 
     ~DBManager();
 
-    void connect();
-    void disconnect(); // желательно сделать оба метода приватными 
 
 
     pqxx::connection* getConnection() {return c;}
 
     std::string selectFromChat(command* cmd);
-    void registrationReques(std::string NAVERNO_JSON);
+    void registrationRequest(std::string NAVERNO_JSON);
 
     //tools
     std::vector<std::string> splitMessage(std::string s, std::string delimeter = ";");

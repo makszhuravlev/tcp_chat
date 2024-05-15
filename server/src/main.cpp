@@ -6,22 +6,22 @@ using json = nlohmann::json;
 
 int main()
 {
-    DBManager db;
-    //DBManager::connect();
     TCPServer<> tcpServer;
 
     tcpServer.onNewConnection = [&](TCPSocket<> *newClient) {
+	DBManager* ClientDBM = new DBManager();
         std::cout << "New client: [" << newClient->remoteAddress() << ":" << newClient->remotePort() << "]" << std::endl;
-
-        newClient->onMessageReceived = [newClient, &db](std::string message) {
+	DBManager* ClientDBM = new DBManager;
+        newClient->onMessageReceived = [newClient](std::string message) {
             std::cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << std::endl;
-            std::string send_m = db.messageManager(message);
+            std::string send_m = ClientDBM->messageManager(message);
             newClient->Send(send_m);
         };
 
         newClient->onSocketClosed = [newClient](int errorCode) {
             std::cout << "Socket closed:" << newClient->remoteAddress() << ":" << newClient->remotePort() << " -> " << errorCode << std::endl;
             std::cout << std::flush;
+	    delete ClientDBM;
         };
     };
 
@@ -39,7 +39,6 @@ int main()
     {
         getline(std::cin, input);
     }
-    db.disconnect();
     tcpServer.Close();
 
     return 0;
