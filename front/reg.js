@@ -12,7 +12,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         errorMessage.textContent = '';
         // формирование json
         const data = {
-            type:'reg',
+            type: 0,
             username: username,
             email: email,
             password: password

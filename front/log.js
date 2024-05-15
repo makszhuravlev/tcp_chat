@@ -4,7 +4,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const password = document.getElementById('loginPassword').value;
     // формирование json
     const data = {
-        type: 'log',
+        type: 1,
         username: username,
         password: password
     };
