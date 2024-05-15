@@ -13,7 +13,7 @@ target_link_libraries(server PUBLIC pthread pq pqxx)
 # CLIENT
 project(client VERSION 1.0)
 
-file(GLOB_RECURSE CLIENT_SOURCES "server/src/*.cpp")
+file(GLOB_RECURSE CLIENT_SOURCES "client/src/*.cpp")
 add_executable(client ${CLIENT_SOURCES})
 
 include_directories("client/include")
