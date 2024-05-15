@@ -1,4 +1,5 @@
 #include "DBManager.hpp"
+#include <fstream>
 
 using json = nlohmann::json;
 
@@ -22,9 +23,25 @@ DBManager::~DBManager()
     //delete DBManager::c;
 }
 
+std::string parseJSON_to_string(const std::string& file_name){
+	std::ifstream file(file_name);
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open file");
+        }
+
+	std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string jsonData = buffer.str();
+
+	return jsonData;
+}
+
 void DBManager::connect(){
     try{
-        DBManager::c = new pqxx::connection("host=217.197.240.93 user=nyashka password=cmd dbname = chat port=5432");
+	std::string json_data = parseJSON_to_string("../serverinfo.json");
+	json serverJSON = json::parse(json_data);
+	std::string connection_info = "host="+serverJSON["ipAddress"].get<std::string>()+" port="+std::to_string((int)serverJSON["port"])+" user="+serverJSON["username"].get<std::string>()+" password="+serverJSON["password"].get<std::string>()+" dbname="+serverJSON["database"].get<std::string>();
+        DBManager::c = new pqxx::connection(connection_info);
         std::cout << "[SUCCESS] DBManager CONNECTED" << std::endl;
     }
     catch(std::exception const &e){

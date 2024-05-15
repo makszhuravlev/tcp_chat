@@ -3,6 +3,6 @@
  "port": 5432,
  "username": "nyashka",
  "password": "cmd",
- "database": "testdb",
+ "database": "chat",
  "timeout": 10000
 }
