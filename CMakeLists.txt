@@ -30,5 +30,5 @@ include_directories("include")
 #find_package(PostgreSQL REQUIRED)
 
 # FILE MANAGEMENT
-file(COPY ${CMAKE_SOURCE_DIR}/server/data DESTINATION ${CMAKE_BINARY_DIR}/server_data)
-file(COPY ${CMAKE_SOURCE_DIR}/client/data DESTINATION ${CMAKE_BINARY_DIR}/client_data)
+file(COPY ${CMAKE_SOURCE_DIR}/server/data/ DESTINATION ${CMAKE_BINARY_DIR}/server_data)
+file(COPY ${CMAKE_SOURCE_DIR}/client/data/ DESTINATION ${CMAKE_BINARY_DIR}/client_data)
