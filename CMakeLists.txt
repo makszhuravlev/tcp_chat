@@ -28,3 +28,6 @@ include_directories("include")
 
 #find_package(libpqxx REQUIRED)
 #find_package(PostgreSQL REQUIRED)
+
+# FILE MANAGEMENT
+file(COPY ${CMAKE_SOURCE_DIR}/server/data DESTINATION ${CMAKE_BINARY_DIR}/server_data) 

@@ -1,44 +1,23 @@
 #include "DBManager.hpp"
-#include <fstream>
+
 
 using json = nlohmann::json;
 
-//DBManager* DBManager::p_instance = nullptr;
-pqxx::connection* DBManager::c = nullptr;
 
-DBManager::DBManager()
+DBManager::DBManager(): c(nullptr)
 {
-    /*
-    assert(p_instance == nullptr);
-    p_instance = this;
-    */
-    DBManager::connect();
-    std::cout << "[SUCCESS] DBManager INITIALIZED" << std::endl;
+
 }
 
 DBManager::~DBManager()
 {
-    //std::cout << "DBManager disconnected" << std::endl;
-    //disconnect();
-    //delete DBManager::c;
+    delete c;
 }
 
-std::string parseJSON_to_string(const std::string& file_name){
-	std::ifstream file(file_name);
-        if (!file.is_open()) {
-            throw std::runtime_error("Failed to open file");
-        }
-
-	std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string jsonData = buffer.str();
-
-	return jsonData;
-}
 
 void DBManager::connect(){
     try{
-	std::string json_data = parseJSON_to_string("../serverinfo.json");
+	std::string json_data = parseJSON_to_string(SERVERINFOJSON_PATH); 
 	json serverJSON = json::parse(json_data);
 	std::string connection_info = "host="+serverJSON["ipAddress"].get<std::string>()+" port="+std::to_string((int)serverJSON["port"])+" user="+serverJSON["username"].get<std::string>()+" password="+serverJSON["password"].get<std::string>()+" dbname="+serverJSON["database"].get<std::string>();
         DBManager::c = new pqxx::connection(connection_info);
@@ -59,7 +38,8 @@ void DBManager::disconnect(){
     std::cout << "[SUCCESS] DBManager DISCONNECTED" << std::endl;
 }
 
-std::string DBManager::select_from_chat(command* cmd){
+
+std::string DBManager::selectFromChat(command* cmd){
     std::cout << "Starting receive process" << std::endl;
     std::string result = "err";
     try{
@@ -90,17 +70,7 @@ std::string DBManager::select_from_chat(command* cmd){
     return result;
 }
 
-/*
-DBManager *DBManager::getInstance() {
-    if(!DBManager::p_instance)           
-        p_instance = new DBManager();
-    return DBManager::p_instance;
-}
-*/
 
-pqxx::connection* DBManager::getConnection(){
-    return c;
-}
 
 std::vector<std::string> DBManager::splitMessage(std::string s, std::string delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
@@ -121,9 +91,20 @@ std::string DBManager::messageManager(std::string message){
     json recieved_json = json::parse(message);
     double pi = recieved_json["pi"];
     std::string response = std::to_string((double)recieved_json["pi"]);
-//std::to_string(pi);
+    //std::to_string(pi);
     return response;
 }
 
 
+std::string DBManager::parseJSON_to_string(const std::string& file_name){
+	std::ifstream file(file_name);
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open file");
+        }
 
+	std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string jsonData = buffer.str();
+
+	return jsonData;
+}

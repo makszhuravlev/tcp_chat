@@ -5,7 +5,9 @@
 #include <assert.h>
 #include <string>
 #include <vector>
-#include "../../include/nlohmann/json.hpp"
+#include <fstream>
+#include "nlohmann/json.hpp"
+#include "constants.hpp"
 
 using json = nlohmann::json;
 
@@ -17,22 +19,25 @@ struct command{
 class DBManager
 {
 private:
-    static pqxx::connection *c;
+    pqxx::connection *c;
+    
+
 public:
     DBManager(); 
     ~DBManager();
-    DBManager( const DBManager& ) = delete;  
-    DBManager& operator=( DBManager& ) = delete;
 
-    static void connect();
-    static void disconnect();
+    void connect();
+    void disconnect(); // желательно сделать оба метода приватными 
 
-    //static DBManager * getInstance();
-    static pqxx::connection* getConnection();
-    static std::string select_from_chat(command* cmd);
-    //void test();
 
-    static std::vector<std::string> splitMessage(std::string s, std::string delimeter = ";");
-    static std::string messageManager(std::string message);
+    pqxx::connection* getConnection() {return c;}
+
+    std::string selectFromChat(command* cmd);
+    void registrationReques(std::string NAVERNO_JSON);
+
+    //tools
+    std::vector<std::string> splitMessage(std::string s, std::string delimeter = ";");
+    std::string messageManager(std::string message);
+    std::string parseJSON_to_string(const std::string& file_name);
 };
 
