@@ -1,12 +1,14 @@
 // C++ program to illustrate the client application in the 
 // socket programming 
+
 #include <cstring> 
 #include <iostream> 
 #include <netinet/in.h> 
 #include <sys/socket.h> 
 #include <unistd.h> 
 #include <fstream>
-#include <nlohmann/json.hpp>
+#include "../../include/nlohmann/json.hpp"
+
 using json = nlohmann::json;
 
 std::string receiveDataFromServer(int sockfd) {
