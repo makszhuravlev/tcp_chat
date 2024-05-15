@@ -30,7 +30,7 @@ std::string receiveDataFromServer(int sockfd) {
 }
 
 std::string parseJSON_to_string(){
-	std::ifstream file("string.json");
+	std::ifstream file("client_data/string.json");
         if (!file.is_open()) {
             throw std::runtime_error("Failed to open file");
         }

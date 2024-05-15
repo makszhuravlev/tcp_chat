@@ -11,7 +11,8 @@ DBManager::DBManager()
 
 DBManager::~DBManager()
 {
-    disconnect();
+    c->close();
+    //disconnect();
 }
 
 
@@ -30,7 +31,7 @@ void DBManager::connect(){
 
 void DBManager::disconnect(){
     try{
-    c->close();
+    //c->close();
     }
     catch(std::exception const &e){
 	std::cerr << e.what() << std::endl;
