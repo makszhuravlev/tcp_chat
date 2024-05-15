@@ -12,8 +12,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     fetch('URL_TO_LOGIN_API', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'X-Request-Type': 'login'  
+            'Content-Type': 'application/json' 
         },
         body: JSON.stringify(data)
     })
