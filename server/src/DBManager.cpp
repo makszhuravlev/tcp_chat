@@ -17,8 +17,9 @@ DBManager::DBManager()
 
 DBManager::~DBManager()
 {
-    disconnect();
-    delete DBManager::c;
+    //std::cout << "DBManager disconnected" << std::endl;
+    //disconnect();
+    //delete DBManager::c;
 }
 
 void DBManager::connect(){
@@ -38,7 +39,7 @@ void DBManager::disconnect(){
     catch(std::exception const &e){
 	std::cerr << e.what() << std::endl;
     }
-    std::cout << "[SUCCESS] DBmanager DISCONNECTED" << std::endl;
+    std::cout << "[SUCCESS] DBManager DISCONNECTED" << std::endl;
 }
 
 std::string DBManager::select_from_chat(command* cmd){
@@ -100,18 +101,12 @@ std::vector<std::string> DBManager::splitMessage(std::string s, std::string deli
 }
 
 std::string DBManager::messageManager(std::string message){
-    std::vector<std::string> temp = DBManager::splitMessage(message);
-    command* cmd = new command;
-
-    cmd->userID=stoi(temp[0]);
-    cmd->action=temp[1];
-    std::cout << cmd->userID << std::endl;
-    std::cout << cmd->action << std::endl;
-
-    std::string response = DBManager::select_from_chat(cmd);
-    delete cmd;
-
+    json recieved_json = json::parse(message);
+    double pi = recieved_json["pi"];
+    std::string response = std::to_string((double)recieved_json["pi"]);
+//std::to_string(pi);
     return response;
 }
+
 
 
