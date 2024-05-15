@@ -7,21 +7,20 @@ using json = nlohmann::json;
 int main()
 {
     TCPServer<> tcpServer;
-	std::cout <<  "fasf" << std::endl;
     tcpServer.onNewConnection = [&](TCPSocket<> *newClient) {
-	//DBManager* ClientDBM = new DBManager();
         std::cout << "New client: [" << newClient->remoteAddress() << ":" << newClient->remotePort() << "]" << std::endl;
-	DBManager* ClientDBM = new DBManager;
+	DBManager* ClientDBM = new DBManager();
         newClient->onMessageReceived = [newClient, &ClientDBM](std::string message) {
             std::cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << std::endl;
             std::string send_m = ClientDBM->messageManager(message);
             newClient->Send(send_m);
+	    //delete ClientDBM;
+	    std::cout << ClientDBM << std::endl;
         };
 
-        newClient->onSocketClosed = [newClient, &ClientDBM](int errorCode) {
+        newClient->onSocketClosed = [newClient](int errorCode) {
             std::cout << "Socket closed:" << newClient->remoteAddress() << ":" << newClient->remotePort() << " -> " << errorCode << std::endl;
             std::cout << std::flush;
-	    delete ClientDBM;
         };
     };
 

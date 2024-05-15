@@ -11,8 +11,10 @@ DBManager::DBManager()
 
 DBManager::~DBManager()
 {
-    c->close();
-    //disconnect();
+	std::cout << c << std::endl;
+	if(c != nullptr){
+		c->close();
+	}
 }
 
 
@@ -29,6 +31,7 @@ void DBManager::connect(){
     }
 }
 
+/*
 void DBManager::disconnect(){
     try{
     //c->close();
@@ -38,7 +41,7 @@ void DBManager::disconnect(){
     }
     std::cout << "[SUCCESS] DBManager DISCONNECTED" << std::endl;
 }
-
+*/
 
 std::string DBManager::selectFromChat(command* cmd){
     std::cout << "Starting receive process" << std::endl;
