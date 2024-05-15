@@ -1,5 +1,7 @@
 #include "DBManager.hpp"
 
+using json = nlohmann::json;
+
 //DBManager* DBManager::p_instance = nullptr;
 pqxx::connection* DBManager::c = nullptr;
 
@@ -30,7 +32,13 @@ void DBManager::connect(){
 }
 
 void DBManager::disconnect(){
+    try{
     c->close();
+    }
+    catch(std::exception const &e){
+	std::cerr << e.what() << std::endl;
+    }
+    std::cout << "[SUCCESS] DBmanager DISCONNECTED" << std::endl;
 }
 
 std::string DBManager::select_from_chat(command* cmd){

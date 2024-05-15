@@ -5,7 +5,9 @@
 #include <netinet/in.h> 
 #include <sys/socket.h> 
 #include <unistd.h> 
-
+#include <fstream>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 std::string receiveDataFromServer(int sockfd) {
     std::string receivedData;
@@ -25,6 +27,19 @@ std::string receiveDataFromServer(int sockfd) {
     return receivedData;
 }
 
+std::string parseJSON_to_string(){
+	std::ifstream file("string.json");
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open file");
+        }
+
+	std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string jsonData = buffer.str();
+
+	return jsonData;
+}
+
 
 int main() 
 { 
@@ -42,8 +57,11 @@ int main()
 			sizeof(serverAddress)); 
 
 	// sending data 
-	const char* message = "1;read"; 
-	send(clientSocket, message, strlen(message), 0); 
+	std::string jsonData = parseJSON_to_string();
+	ssize_t bytes_sent = send(clientSocket, jsonData.c_str(), jsonData.length(), 0);
+        if (bytes_sent < 0) {
+            throw std::runtime_error("Failed to send data");
+        } 
 
 	
 	std::string rec_message = receiveDataFromServer(clientSocket);

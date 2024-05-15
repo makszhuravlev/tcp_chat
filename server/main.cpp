@@ -2,6 +2,7 @@
 #include <iostream>
 #include "DBManager.hpp"
 
+using json = nlohmann::json;
 
 int main()
 {
@@ -38,7 +39,7 @@ int main()
     {
         getline(std::cin, input);
     }
-
+    DBManager::disconnect();
     tcpServer.Close();
 
     return 0;

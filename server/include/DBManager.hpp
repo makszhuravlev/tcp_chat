@@ -5,6 +5,9 @@
 #include <assert.h>
 #include <string>
 #include <vector>
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 struct command{
     int userID;
@@ -22,7 +25,7 @@ public:
     DBManager& operator=( DBManager& ) = delete;
 
     static void connect();
-    void disconnect();
+    static void disconnect();
 
     //static DBManager * getInstance();
     static pqxx::connection* getConnection();
