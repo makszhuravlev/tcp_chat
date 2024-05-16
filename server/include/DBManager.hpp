@@ -18,7 +18,7 @@ struct command{
 class DBManager
 {
 private:
-    pqxx::connection *c;
+    pqxx::connection *c; 
     void connect();    
     void disconnect();
 public:
