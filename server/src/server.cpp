@@ -23,32 +23,29 @@ int main() {
 			DBManager* ClientDB = new DBManager();
 			std::thread{
 				[socket{std::move(socket)}](){
-				boost::beast::websocket::stream<tcp::socket> ws {std::move(const_cast<tcp::socket&>(socket))};
-				
-				ws.accept();
-				
-				while(true){
-					try{
-					boost::beast::flat_buffer buffer;
-					ws.read(buffer);
-					auto message = boost::beast::buffers_to_string(buffer.cdata());
-					std::cout << message << std::endl;
-					ws.write(buffer.data());
+					boost::beast::websocket::stream<tcp::socket> ws {std::move(const_cast<tcp::socket&>(socket))};
+					
+					ws.accept();
+					
+					while(true){
+						try{
+							boost::beast::flat_buffer buffer;
+							ws.read(buffer);
+							auto message = boost::beast::buffers_to_string(buffer.cdata());
+							std::cout << message << std::endl;
+							ws.write(buffer.data());
+						}
+						catch(boost::beast::system_error const& se){
+							if(se.code() != boost::beast::websocket::error::closed){
+								std::cout << se.code().message() << std::endl;
+								break;
+							}
+						}
 					}
-					catch(boost::beast::system_error const& se){
-					if(se.code() != boost::beast::websocket::error::closed){
-						std::cout << se.code().message() << std::endl;
-						break;
-					}
-					}
-				}
-				
 				} 
-          }.detach();
-          
+          	}.detach();
         }
-        
-        
+		
     } catch (std::exception const& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
