@@ -16,6 +16,7 @@ body {
 }
 
 .app {
+  position: relative;
   display: flex;
   height: 90vh;
   width: 90vw;
@@ -120,6 +121,8 @@ body {
   padding: 20px;
   overflow-y: auto;
   background-color: #1f2145;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
@@ -133,28 +136,30 @@ body {
 }
 
 .message-received {
-  background-color: #4b4c72;
+
   padding: 10px;
   border-radius: 10px;
   margin: 10px 0;
   word-wrap: break-word;
-  width: fit-content; /* Подгоняет ширину под содержимое */
-  max-width: 80%; /* Максимальная ширина для соответствия стилю */
   align-self: flex-start; /* Выравниваем полученные сообщения слева */
+  background-color: #4b4c72;
 }
 
 .message-sent {
-  background-color: #4b4c72;
+  align-self: flex-end; /* Выравниваем отправленные сообщения справа */
+  background-color: #7b61ff;
+}
+
+.message-sent {
+  background-color: #7b61ff;
   padding: 10px;
   border-radius: 10px;
   margin: 10px 0;
   word-wrap: break-word;
-  width: fit-content; /* Подгоняет ширину под содержимое */
-  max-width: 80%; /* Максимальная ширина для соответствия стилю */
-  background-color: #7b61ff;
-  align-self: flex-end; /* Выравниваем отправленные сообщения справа */
+  width: fit-content;
+  max-width: 80%;
+  align-self: flex-end;
 }
-
 
 
 .message-input {
@@ -206,7 +211,25 @@ body {
   resize: none; /* Отключает возможность изменения размера пользователем */
   overflow-y: auto; /* Добавляет вертикальную прокрутку при необходимости */
 }
+.message-input textarea::-webkit-scrollbar {
+  width: 8px; /* ширина полосы прокрутки */
+}
 
+.message-input textarea::-webkit-scrollbar-track {
+  background: #2e335a; /* цвет дорожки */
+}
+
+.message-input textarea::-webkit-scrollbar-thumb {
+  background-color: #7b61ff; /* цвет самой полосы прокрутки */
+  border-radius: 10px;
+  border: 2px solid #2e335a;
+}
+
+/* Стилизация для Firefox */
+.message-input textarea {
+  scrollbar-width: thin;
+  scrollbar-color: #7b61ff #2e335a;
+}
 .message-input textarea:focus {
   outline: none;
 }
@@ -272,4 +295,120 @@ body {
   .message {
     max-width: 80%;
   }
+}
+
+.settings-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1000;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #7b61ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: block; /* Убедитесь, что кнопка отображается */
+}
+
+
+.settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 1001; /* Чтобы затемняющий фон был поверх всего */
+  justify-content: center;
+  align-items: center;
+}
+
+.settings-content {
+  background-color: #2e335a;
+  padding: 20px;
+  border-radius: 10px;
+  width: 50%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.close-button {
+  float: right;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+}
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #1a1b31;
+}
+
+.form {
+  background-color: #2e335a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form.hidden {
+  display: none;
+}
+
+.form h2 {
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4b4c72;
+  color: #ffffff;
+}
+
+.form input:focus {
+  outline: none;
+}
+
+.form button {
+  background-color: #7b61ff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+}
+
+.form button:hover {
+  background-color: #6754d6;
+}
+
+.form p {
+  color: #b0b0c3;
+}
+
+.form a {
+  color: #7b61ff;
+  text-decoration: none;
+}
+
+.form a:hover {
+  text-decoration: underline;
 }
