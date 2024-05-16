@@ -59,8 +59,37 @@ std::string DBManager::Request(std::string request)
 
 void DBManager::registerRequest(Json json)
 {
-
+    std::cout << "Starting receive process" << std::endl;
+    std::string result = "err";
+    try{
+        pqxx::work w(*c);
+        std::string login = json["login"].get<std::string>();
+        std::string password = json["password"].get<std::string>();
+        pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
+        if(check_login.size() == 0){
+            std::cout << "Starting registration process..." << std::endl;
+            w.exec("INSERT INTO users VALUES ('" + login + "', '" + password + "');");
+        }
+        else
+        {
+            std::cout << "Login has been claimed, cansel..." << std::endl;
+        }
+        
+        pqxx::result result_query = w.exec("SELECT * FROM users");
+        for(auto res : result_query){
+            for(auto r : res){
+                std::cout << r << " ";
+            }
+            std::cout << std::endl;
+        }
+        w.commit();
+    }
+    catch(std::exception const &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
 }
+
 void DBManager::sendMessageRequest(Json json)
 {
 
