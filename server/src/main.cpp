@@ -1,44 +1,34 @@
-#include "../../include/socket/tcpserver.hpp"
 #include <iostream>
-#include "DBManager.hpp"
+#include <boost/asio.hpp>
+#include <thread>
 
-using json = nlohmann::json;
+using boost::asio::ip::tcp;
 
-int main()
-{
-    TCPServer<> tcpServer;
-    tcpServer.onNewConnection = [&](TCPSocket<> *newClient) {
-        std::cout << "New client: [" << newClient->remoteAddress() << ":" << newClient->remotePort() << "]" << std::endl;
-	DBManager* ClientDBM = new DBManager();
-        newClient->onMessageReceived = [newClient, &ClientDBM](std::string message) {
-            std::cout << newClient->remoteAddress() << ":" << newClient->remotePort() << " => " << message << std::endl;
-            std::string send_m = ClientDBM->messageManager(message);
-            newClient->Send(send_m);
-	    //delete ClientDBM;
-	    std::cout << ClientDBM << std::endl;
-        };
+void handle_client(tcp::socket& socket) {
+    std::string message = "Hello, Client!\r\n";
+    boost::asio::write(socket, boost::asio::buffer(message));
+    socket.shutdown(tcp::socket::shutdown_both);
+}
 
-        newClient->onSocketClosed = [newClient](int errorCode) {
-            std::cout << "Socket closed:" << newClient->remoteAddress() << ":" << newClient->remotePort() << " -> " << errorCode << std::endl;
-            std::cout << std::flush;
-        };
-    };
+int main() {
+    try {
+        boost::asio::io_context io_context;
 
-    tcpServer.Bind(8080, [](int errorCode, std::string errorMessage) {
-        std::cout << errorCode << " : " << errorMessage << std::endl;
-    });
+        tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));
 
-    tcpServer.Listen([](int errorCode, std::string errorMessage) {
-        std::cout << errorCode << " : " << errorMessage << std::endl;
-    });
+        std::cout << "Listening on port 8080..." << std::endl;
 
-    std::string input;
-    getline(std::cin, input);
-    while (input!= "exit")
-    {
-        getline(std::cin, input);
+        for (;;) {
+            tcp::socket socket(io_context);
+            acceptor.accept(socket);
+
+            // Spawn a new thread to handle the client connection
+            std::thread client_thread(handle_client, std::ref(socket));
+            client_thread.join(); // Wait for the thread to finish
+        }
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
-    tcpServer.Close();
 
     return 0;
 }

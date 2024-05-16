@@ -4,10 +4,13 @@ cmake_minimum_required(VERSION 3.21.3)
 # SERVER
 project(server VERSION 1.0)
 
+find_package(Boost REQUIRED COMPONENTS system)
+
 file(GLOB_RECURSE SERVER_SOURCES "server/src/*.cpp")
 add_executable(server ${SERVER_SOURCES})
 
 include_directories("server/include")
+include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(server PUBLIC pthread pq pqxx)
 
 # CLIENT
