@@ -9,29 +9,42 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     if (password !== confirmPassword) {
         errorMessage.textContent = 'Пароли не совпадают';
     } else {
-        errorMessage.textContent = '';
-        // формирование json
-        const data = {
-            type: 0,
-            username: username,
-            email: email,
-            password: password
-        };
-        console.log('Отправка данных регистрации:', JSON.stringify(data));
-        // отправка
-        fetch('URL_TO_REGISTER_API', {
-            method: 'POST',
-            headers: {
-            },
-            body: JSON.stringify(data)
-        })
-        // проверка 
-        .then(response => response.json())
-        .then(data => {
-            console.log('Успех:', data);
-        })
-        .catch((error) => {
-            console.error('Ошибка:', error);
+        var socket = new WebSocket('ws://localhost:8080');
+
+        socket.addEventListener('open', function (event) {
+            console.log('Connected to WS Server');
+            
+            // Prepare JSON data to send
+            var jsonData = {
+                type: 0,
+                username: username,
+                email: email,
+                password: password
+            };
+            
+            var jsonString = JSON.stringify(jsonData);
+            
+            console.log("Sending:", jsonString);
+            socket.send(jsonString);
+        });
+
+        socket.addEventListener('message', function (event) {
+            console.log('Message from server ', event.data);
+            const response = JSON.parse(event.data);
+            if (response.success) {
+                errorMessage.textContent = 'Регистрация успешна';
+            } else {
+                errorMessage.textContent = response.message;
+            }
+        });
+
+        socket.addEventListener('error', function (event) {
+            console.error('WebSocket error: ', event);
+            errorMessage.textContent = 'Ошибка соединения с сервером';
+        });
+
+        socket.addEventListener('close', function (event) {
+            console.log('WebSocket connection closed: ', event);
         });
     }
 });
