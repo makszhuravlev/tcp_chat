@@ -1,0 +1,40 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>месангер</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>месангер</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <div class="chat-list" id="chatList">
+            <!-- Чаты будут динамически добавляться здесь -->
+        </div>
+        <div class="chat-window">
+            <div class="messages" id="messages">
+                <!-- Сообщения будут динамически добавляться здесь -->
+            </div>
+            <div class="message-input">
+                <textarea id="messageInput" placeholder="тут пиши сообщение"></textarea>
+                <button id="sendButton">отправить</button>
+            </div>
+        </div>
+        <button id="settingsButton" class="settings-button">Настройки</button>
+        <div id="settingsModal" class="settings-modal">
+            <div class="settings-content">
+                <span class="close-button">&times;</span>
+                <h2>Настройки</h2>
+                <p>Здесь могут быть настройки вашего приложения.</p>
+            </div>
+        </div>
+        
+    </div>  
+    <script src="script.js"></script>
+</body>
+</html>
