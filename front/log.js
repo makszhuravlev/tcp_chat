@@ -34,6 +34,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         errorMessage.textContent = 'Ошибка соединения с сервером';
     });
 
+    // это самый гениальный комит
     socket.addEventListener('close', function (event) {
         console.log('WebSocket connection closed: ', event);
     });

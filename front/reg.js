@@ -42,7 +42,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             console.error('WebSocket error: ', event);
             errorMessage.textContent = 'Ошибка соединения с сервером';
         });
-
+        // это самый гениальный комит
         socket.addEventListener('close', function (event) {
             console.log('WebSocket connection closed: ', event);
         });
