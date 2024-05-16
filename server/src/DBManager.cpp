@@ -30,7 +30,7 @@ DBManager::~DBManager(){
 std::string DBManager::Request(std::string request)
 {
     Json json = Json::parse(request);
-    std::string login = json["login"].get<std::string>();
+    std::string login = json["username"].get<std::string>();
     std::string password = json["password"].get<std::string>();
     switch((int)json["type"])
     {
@@ -53,7 +53,7 @@ std::string DBManager::Request(std::string request)
             break;
     }
 
-    return "brah";
+    return "bruh";
 
 }
 
@@ -63,7 +63,7 @@ void DBManager::registerRequest(Json json)
     std::string result = "err";
     try{
         pqxx::work w(*c);
-        std::string login = json["login"].get<std::string>();
+        std::string login = json["username"].get<std::string>();
         std::string password = json["password"].get<std::string>();
         pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
         if(check_login.size() == 0){
