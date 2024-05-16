@@ -22,7 +22,7 @@ int main() {
 			std::cout << "socket connected" << std::endl;
 			DBManager* ClientDB = new DBManager();
 			std::thread{
-				[socket{std::move(socket)}](){
+				[socket{std::move(socket)}, &ClientDB](){
 					boost::beast::websocket::stream<tcp::socket> ws {std::move(const_cast<tcp::socket&>(socket))};
 					
 					ws.accept();
@@ -33,6 +33,7 @@ int main() {
 							ws.read(buffer);
 							auto message = boost::beast::buffers_to_string(buffer.cdata());
 							std::cout << message << std::endl;
+							ClientDB->Request(message);
 							ws.write(buffer.data());
 						}
 						catch(boost::beast::system_error const& se){
