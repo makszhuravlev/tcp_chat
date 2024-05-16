@@ -3,25 +3,38 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     // формирование json
-    const data = {
-        type: 1,
-        username: username,
-        password: password
-    };
-    // отправка
-    fetch('URL_TO_LOGIN_API', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(data)
-    })
-    // проверка
-    .then(response => response.json())
-    .then(data => {
-        console.log('Успех:', data);
-    })
-    .catch((error) => {
-        console.error('Ошибка:', error);
+    socket.addEventListener('open', function (event) {
+        console.log('Connected to WS Server');
+        
+        // Prepare JSON data to send
+        var jsonData = {
+            type: 1,
+            username: username,
+            password: password
+        };
+        
+        var jsonString = JSON.stringify(jsonData);
+        
+        console.log("Sending:", jsonString);
+        socket.send(jsonString);
+    });
+
+    socket.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+        const response = JSON.parse(event.data);
+        if (response.success) {
+            errorMessage.textContent = 'Регистрация успешна';
+        } else {
+            errorMessage.textContent = response.message;
+        }
+    });
+
+    socket.addEventListener('error', function (event) {
+        console.error('WebSocket error: ', event);
+        errorMessage.textContent = 'Ошибка соединения с сервером';
+    });
+
+    socket.addEventListener('close', function (event) {
+        console.log('WebSocket connection closed: ', event);
     });
 });
