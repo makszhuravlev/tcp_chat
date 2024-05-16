@@ -27,7 +27,12 @@ public:
     std::string Request(std::string request);
     //tools;
 
-    bool checkLogin(const std::string &login, const std::string &password);
+    bool checkLogin(const std::string &login, const std::string &password)
+    {
+        return true;
+    }
+    
     std::string JSON_to_string(const std::string& file_name);
 
 };
+

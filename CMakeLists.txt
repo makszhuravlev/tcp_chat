@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.21.3)
 
 project(server VERSION 1.0)
 
-include_directories("include")
 include_directories("server/include")
 include_directories(${Boost_INCLUDE_DIRS})
 
