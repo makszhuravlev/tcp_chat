@@ -29,25 +29,23 @@ DBManager::~DBManager(){
 
 std::string DBManager::Request(std::string request)
 {
-    Json json = Json::parse(request);
-    std::string login = json["username"].get<std::string>();
-    std::string password = json["password"].get<std::string>();
-    switch((int)json["type"])
+    parseJson(request);
+    switch(type)
     {
         case 0:
-            registerRequest(json);
+            registerRequest();
             std::cout << "registerRequest: " << login << " : " << password << std::endl;
             break;
         case 1:
-            if(checkLogin(login,  password))
+            if(checkLogin())
             {
-                void getMessageRequest(Json json);
+                void getMessageRequest();
             }
             break;
         case 2:
-            if(checkLogin(login,  password))
+            if(checkLogin())
             {
-                void sendMessageRequest(Json json);
+                void sendMessageRequest();
             }
         default:
             break;
@@ -57,14 +55,12 @@ std::string DBManager::Request(std::string request)
 
 }
 
-void DBManager::registerRequest(Json json)
+void DBManager::registerRequest()
 {
     std::cout << "Starting receive process" << std::endl;
     std::string result = "err";
     try{
         pqxx::work w(*c);
-        std::string login = json["username"].get<std::string>();
-        std::string password = json["password"].get<std::string>();
         pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
         if(check_login.size() == 0){
             std::cout << "Starting registration process..." << std::endl;
@@ -72,7 +68,7 @@ void DBManager::registerRequest(Json json)
         }
         else
         {
-            std::cout << "Login has been claimed, cansel..." << std::endl;
+            std::cout << "Login has been claimed, cancel..." << std::endl;
         }
         
         pqxx::result result_query = w.exec("SELECT * FROM users");
@@ -90,16 +86,21 @@ void DBManager::registerRequest(Json json)
     }
 }
 
-void DBManager::sendMessageRequest(Json json)
+void DBManager::sendMessageRequest()
 {
 
 }
-void DBManager::getMessageRequest(Json json)
+void DBManager::getMessageRequest()
 {
 
 }
 
-
+void DBManager::parseJson(std::string request)
+{
+    Json json = Json::parse(request);
+    login = json["username"].get<std::string>();
+    password = json["password"].get<std::string>();
+}
     
 std::string DBManager::JSON_to_string(const std::string& file_name){
     std::ifstream file(file_name);

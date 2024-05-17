@@ -14,6 +14,10 @@ class DBManager
 {
 private:
     pqxx::connection *c;
+    int type;
+    std::string login;
+    std::string password;
+    std::string message;
     void connect();
   
 public:
@@ -21,13 +25,13 @@ public:
     DBManager();
     ~DBManager();
 
-    void registerRequest(Json json);
-    void sendMessageRequest(Json json);
-    void getMessageRequest(Json json);
+    void registerRequest();
+    void sendMessageRequest();
+    void getMessageRequest();
     std::string Request(std::string request);
     //tools;
-
-    bool checkLogin(const std::string &login, const std::string &password)
+    void parseJson(std::string request);
+    bool checkLogin()
     {
         return true;
     }
