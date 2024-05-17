@@ -3,7 +3,7 @@
 
 void DBManager::connect(){
     try{
-        std::string json_data = JSON_to_string("serverinfo.json"); 
+        std::string json_data = JSON_to_string("server_data/serverinfo.json"); 
         Json serverJSON = Json::parse(json_data);
         std::string connection_info = "host="+serverJSON["ipAddress"].get<std::string>()+" port="+std::to_string((int)serverJSON["port"])+" user="+serverJSON["username"].get<std::string>()+" password="+serverJSON["password"].get<std::string>()+" dbname="+serverJSON["database"].get<std::string>();
         c = new pqxx::connection(connection_info);
