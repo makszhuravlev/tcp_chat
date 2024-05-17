@@ -39,13 +39,13 @@ std::string DBManager::Request(std::string request)
         case 1:
             if(checkLogin())
             {
-                void getMessageRequest();
+                getMessageRequest();
             }
             break;
         case 2:
             if(checkLogin())
             {
-                void sendMessageRequest();
+                sendMessageRequest();
             }
         default:
             break;
@@ -88,7 +88,16 @@ void DBManager::registerRequest()
 
 void DBManager::sendMessageRequest()
 {
-
+	std::cout << "Starting sending message..." << std::endl;
+	try{
+		pqxx::work w(*c);
+		std::cout << message << " " << login << " " << chatID << std::endl;
+		w.exec_params("INSERT INTO messages(content, sender, chat) VALUES($1, $2, $3);", message, login, chatID);
+		w.commit();
+	}
+	catch(const std::exception& e){
+		std::cerr << "Failed to send message: " << e.what() << std::endl;
+	}
 }
 void DBManager::getMessageRequest()
 {
@@ -97,9 +106,20 @@ void DBManager::getMessageRequest()
 
 void DBManager::parseJson(std::string request)
 {
+    std::cout << "Starting parsing..." << std::endl;
     Json json = Json::parse(request);
     login = json["username"].get<std::string>();
     password = json["password"].get<std::string>();
+    message = json["message"].get<std::string>();
+    chatID = (int)json["chatID"];
+    type = (int)json["type"];
+    std::cout << "Parsing completed" << std::endl;
+    std::cout << "Login: " << login << std::endl;
+    std::cout << "Password: " << password << std::endl;
+    std::cout << "Message: " << message << std::endl;
+    std::cout << "ChatID: " << chatID << std::endl;
+    std::cout << "type: " << type << std::endl;
+
 }
     
 std::string DBManager::JSON_to_string(const std::string& file_name){

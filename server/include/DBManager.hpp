@@ -14,10 +14,11 @@ class DBManager
 {
 private:
     pqxx::connection *c;
-    int type;
-    std::string login;
-    std::string password;
-    std::string message;
+    int type = -1;
+    std::string login = "";
+    std::string password = "";
+    std::string message = "";
+    int chatID = 0;
     void connect();
   
 public:
