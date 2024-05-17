@@ -3,7 +3,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     // формирование json
-    socket.addEventListener('open', function (event) {
+        var socket = new WebSocket('ws://localhost:8080');
+        socket.addEventListener('open', function (event) {
         console.log('Connected to WS Server');
         
         // Prepare JSON data to send
@@ -23,7 +24,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         console.log('Message from server ', event.data);
         const response = JSON.parse(event.data);
         if (response.success) {
-            errorMessage.textContent = 'Регистрация успешна';
+            errorMessage.textContent = 'Вы успешно вошли в систему';
         } else {
             errorMessage.textContent = response.message;
         }
@@ -31,7 +32,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
     socket.addEventListener('error', function (event) {
         console.error('WebSocket error: ', event);
-        errorMessage.textContent = 'Ошибка соединения с сервером';
+        alert("Ошибка соединения с сервером. Попробуйте ещё раз или зайдите позже!");
+        document.getElementById("error").textContent="Ошибка соединения с сервером";
+
     });
 
     // это самый гениальный комит

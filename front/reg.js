@@ -13,8 +13,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
 
         socket.addEventListener('open', function (event) {
             console.log('Connected to WS Server');
-            
-            // Prepare JSON data to send
+
             var jsonData = {
                 type: 0,
                 username: username,
@@ -41,8 +40,8 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         socket.addEventListener('error', function (event) {
             console.error('WebSocket error: ', event);
             errorMessage.textContent = 'Ошибка соединения с сервером';
+            alert("Ошибка соединения с сервером. Попробуйте ещё раз или зайдите позже!");
         });
-        // это самый гениальный комит
         socket.addEventListener('close', function (event) {
             console.log('WebSocket connection closed: ', event);
         });

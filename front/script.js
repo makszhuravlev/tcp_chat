@@ -61,8 +61,6 @@ function loadChatMessages(chatId) {
         chat.messages.forEach(message => {
             const messageContainer = document.createElement('div');
             messageContainer.textContent = message.text;
-
-            // Добавляем классы в зависимости от отправителя сообщения
             if (message.sender === "received") {
                 messageContainer.classList.add('message', 'message-received');
             } else if (message.sender === "sent") {
@@ -107,7 +105,7 @@ document.getElementById('sendButton').addEventListener('click', sendMessage);
 
 document.getElementById('messageInput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault(); // Предотвращает создание новой строки
+        event.preventDefault();
         sendMessage();
     }
 });
@@ -118,7 +116,7 @@ window.onload = function() {
 };
 
 document.getElementById('settingsButton').addEventListener('click', function() {
-    document.getElementById('settingsModal').style.display = 'flex'; // Убедитесь, что здесь 'flex', а не 'block'
+    document.getElementById('settingsModal').style.display = 'flex'; 
 });
 
 document.querySelector('.close-button').addEventListener('click', function() {
