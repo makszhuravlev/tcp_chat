@@ -108,11 +108,14 @@ void DBManager::parseJson(std::string request)
 {
     std::cout << "Starting parsing..." << std::endl;
     Json json = Json::parse(request);
-    login = json["username"].get<std::string>();
-    password = json["password"].get<std::string>();
-    message = json["message"].get<std::string>();
-    chatID = (int)json["chatID"];
-    type = (int)json["type"];
+    try{login = json["username"].get<std::string>();}catch(std::exception& e){}
+    try{password = json["password"].get<std::string>();}catch(std::exception& e){}
+    try{message = json["message"].get<std::string>();}catch(std::exception& e){}
+    try{chatID = (int)json["chatID"];}catch(std::exception& e){}
+    try{type = (int)json["type"];}catch(std::exception& e){}
+    
+    
+    
     std::cout << "Parsing completed" << std::endl;
     std::cout << "Login: " << login << std::endl;
     std::cout << "Password: " << password << std::endl;
