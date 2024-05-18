@@ -7,7 +7,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         socket.addEventListener('open', function (event) {
         console.log('Connected to WS Server');
         
-        // Prepare JSON data to send
         var jsonData = {
             type: 1,
             username: username,
@@ -37,7 +36,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
     });
 
-    // это самый гениальный комит
+
     socket.addEventListener('close', function (event) {
         console.log('WebSocket connection closed: ', event);
     });
