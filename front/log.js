@@ -22,10 +22,15 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     socket.addEventListener('message', function (event) {
         console.log('Message from server ', event.data);
         const response = JSON.parse(event.data);
-        if (response.success) {
-            errorMessage.textContent = 'Вы успешно вошли в систему';
-        } else {
-            errorMessage.textContent = response.message;
+        if (event.data === "true") {
+            console.log('забавный челик проходи')
+        }
+        if (event.data === "false") {
+            console.log('отказ')
+        } 
+        else {
+            console.log('ЕБАТЬ КОПАТЬ')
+            console.log(event.data)
         }
     });
 

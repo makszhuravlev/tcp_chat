@@ -36,6 +36,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             } 
             else {
                 console.log('ЕБАТЬ КОПАТЬ')
+                console.log(event.data)
             }
         });
 
