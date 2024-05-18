@@ -1,7 +1,7 @@
 const chatData = [
     {
         "id": 1,
-        "name": "Лох лохов",
+        "name": "Привет приветович",
         "messages": [
             {"sender": "received", "text": "почему?"},
             {"sender": "sent", "text": "покачену"}
@@ -90,7 +90,9 @@ function sendMessage() {
             document.querySelector('.messages').appendChild(messageContainer);
             input.value = '';
             input.focus();
-
+            let username = localStorage.getItem('username');
+            let password = localStorage.getItem('password');
+            console.log(username, password);
             scrollToBottom();
         }
     }

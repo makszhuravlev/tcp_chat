@@ -2,6 +2,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     event.preventDefault();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
     // формирование json
         var socket = new WebSocket('ws://localhost:8080');
         socket.addEventListener('open', function (event) {
