@@ -35,7 +35,13 @@ int main() {
 							auto message = boost::beast::buffers_to_string(buffer.cdata());
 							std::cout << message << std::endl;
 							std::string answer = ClientDB->Request(message);
+							buffer.clear();
+							//////АААААА НЕ ОТЧИЩАЕТСЧОМЯЧ БУФЕР БЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯТЬ ЗАЕБАЛО БЛТЬ СУКА НАХУУЙ
+							boost::beast::ostream(buffer) << answer + answer;
 							ws.write(buffer.data());
+							for (int i = 0; i < 100; i++) {
+        						std::cout << boost::beast::buffers_to_string(buffer.data()) << std::endl;
+    						}	
 							delete ClientDB;
 
 						}
