@@ -12,7 +12,6 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         var socket = new WebSocket('ws://localhost:8080');
 
         socket.addEventListener('open', function (event) {
-            console.log('Connected to WS Server');
 
             var jsonData = {
                 type: 0,
@@ -23,7 +22,6 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             
             var jsonString = JSON.stringify(jsonData);
             
-            console.log("Sending:", jsonString);
             socket.send(jsonString);
         });
 
@@ -32,11 +30,9 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             const response = JSON.parse(event.data);
             if (event.data === "true") {
                 console.log('забавный челик проходи')
-                errorMessage.textContent = 'Регистрация успешна';
             }
             if (event.data === "false") {
                 console.log('отказ')
-                errorMessage.textContent = 'Ошибка регистрации';
             } 
             else {
                 console.log('ЕБАТЬ КОПАТЬ')
@@ -45,7 +41,6 @@ document.getElementById('registerForm').addEventListener('submit', function(even
 
         socket.addEventListener('error', function (event) {
             console.error('WebSocket error: ', event);
-            errorMessage.textContent = 'Ошибка соединения с сервером';
             alert("Ошибка соединения с сервером. Попробуйте ещё раз или зайдите позже!");
         });
         socket.addEventListener('close', function (event) {
