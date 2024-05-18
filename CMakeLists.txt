@@ -16,7 +16,7 @@ add_executable(server ${SERVER_SOURCES})
 set(libpqxxdir "libpqxx-${LIBVERSION}")
 
 # You can usually skip building the tests.
-#set(SKIP_BUILD_TEST ON)
+set(SKIP_BUILD_TEST ON)
 
 set(BUILD_SHARED_LIBS OFF)
 
