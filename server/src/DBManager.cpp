@@ -33,32 +33,33 @@ DBManager::~DBManager(){
 std::string DBManager::Request(std::string request)
 {
     parseJson(request);
+    std::string answer="empty";
     switch(type)
     {
         case 0:
-            registerRequest();
+            answer = registerRequest();
             std::cout << "registerRequest: " << login << " : " << password << std::endl;
             break;
         case 1:
             if(checkLogin())
             {
-                getMessageRequest();
+                answer = getMessageRequest();
             }
             break;
         case 2:
             if(checkLogin())
             {
-                sendMessageRequest();
+                answer = sendMessageRequest();
             }
         default:
             break;
     }
 
-    return "bruh";
+    return answer;
 
 }
 
-void DBManager::registerRequest()
+std::string DBManager::registerRequest()
 {
     std::cout << "Starting receive process" << std::endl;
 
@@ -69,10 +70,12 @@ void DBManager::registerRequest()
         if(check_login.size() == 0){
             std::cout << "Starting registration process..." << std::endl;
             w.exec("INSERT INTO users VALUES ('" + login + "', '" + password + "');");
+            return "true";
         }
         else
         {
             std::cout << "Login has been claimed, cancel..." << std::endl;
+            return "false";
         }
         w.commit();
     }
@@ -80,9 +83,10 @@ void DBManager::registerRequest()
     {
         std::cerr << e.what() << std::endl;
     }
+    return "BRUH";
 }
 
-void DBManager::sendMessageRequest()
+std::string DBManager::sendMessageRequest()
 {
 	std::cout << "Starting sending message..." << std::endl;
 	try{
@@ -94,13 +98,15 @@ void DBManager::sendMessageRequest()
 	catch(const std::exception& e){
 		std::cerr << "Failed to send message: " << e.what() << std::endl;
 	}
+    return "NOT READY";
+    
 }
-void DBManager::getMessageRequest()
+std::string DBManager::getMessageRequest()
 {
-
+    return "NOT READY";
 }
 
-void DBManager::checkLoginRequest()
+std::string DBManager::checkLoginRequest()
 {
     std::cout << "Printing all users:" << std::endl;
     try{
@@ -111,9 +117,11 @@ void DBManager::checkLoginRequest()
         {
             //return "true";
             std::cout << "password correct" << std::endl;
+            return "true";
         }
         {
             std::cout << "password not correct" << std::endl;
+            return "false";
         }
         
         w.commit();
@@ -122,6 +130,7 @@ void DBManager::checkLoginRequest()
     {
         std::cerr << e.what() << std::endl;
     }
+    return "BRUH";
 }
 
 void DBManager::printUsers()
@@ -164,6 +173,11 @@ void DBManager::parseJson(std::string request)
     std::cout << "ChatID: " << chatID << std::endl;
     std::cout << "type: " << type << std::endl;
 
+}
+
+bool DBManager::checkLogin()
+{
+    return true;
 }
     
 std::string DBManager::JSON_to_string(const std::string& file_name){

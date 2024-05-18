@@ -34,7 +34,7 @@ int main() {
 							ws.read(buffer);
 							auto message = boost::beast::buffers_to_string(buffer.cdata());
 							std::cout << message << std::endl;
-							ClientDB->Request(message);
+							std::string answer = ClientDB->Request(message);
 							ws.write(buffer.data());
 							delete ClientDB;
 

@@ -5,8 +5,9 @@ project(server VERSION 1.0)
 include_directories("server/include")
 include_directories(${Boost_INCLUDE_DIRS})
 
-#find_package(libpqxx REQUIRED)
+#find_package(libpqxx REQUIRED)не рекомендуется уже есть в зависимостях
 find_package(PostgreSQL REQUIRED)
+#find_package(PostgreSQL )остальные зависимости
 find_package(Boost REQUIRED COMPONENTS system)
 
 file(GLOB_RECURSE SERVER_SOURCES "server/src/*.cpp")

@@ -27,19 +27,16 @@ public:
     ~DBManager();
 
     std::string Request(std::string request);
-    void registerRequest();
-    void sendMessageRequest();
-    void getMessageRequest();
-    void checkLoginRequest();
+    std::string registerRequest();
+    std::string sendMessageRequest();
+    std::string getMessageRequest();
+    std::string checkLoginRequest();
     
 
     //tools;
     void printUsers();
     void parseJson(std::string request);
-    bool checkLogin()
-    {
-        return true;
-    }
+    bool checkLogin();
     
     std::string JSON_to_string(const std::string& file_name);
 
