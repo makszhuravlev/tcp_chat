@@ -30,10 +30,16 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         socket.addEventListener('message', function (event) {
             console.log('Message from server ', event.data);
             const response = JSON.parse(event.data);
-            if (response.success) {
+            if (event.data === "true") {
+                console.log('забавный челик проходи')
                 errorMessage.textContent = 'Регистрация успешна';
-            } else {
-                errorMessage.textContent = response.message;
+            }
+            if (event.data === "false") {
+                console.log('отказ')
+                errorMessage.textContent = 'Ошибка регистрации';
+            } 
+            else {
+                console.log('ЕБАТЬ КОПАТЬ')
             }
         });
 
