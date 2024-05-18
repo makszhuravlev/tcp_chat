@@ -18,7 +18,8 @@ private:
     std::string login = "";
     std::string password = "";
     std::string message = "";
-    int chatID = 0;
+    int chat_id = 0;
+    int offset = 0;
     void connect();
   
 public:

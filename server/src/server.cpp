@@ -39,11 +39,11 @@ int main() {
 							//////АААААА НЕ ОТЧИЩАЕТСЧОМЯЧ БУФЕР БЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯТЬ ЗАЕБАЛО БЛТЬ СУКА НАХУУЙ
 							boost::beast::ostream(buffer) << answer + answer;
 							ws.write(buffer.data());
+/*
 							for (int i = 0; i < 100; i++) {
         						std::cout << boost::beast::buffers_to_string(buffer.data()) << std::endl;
-    						}	
-							delete ClientDB;
-
+							}
+*/
 						}
 						catch(boost::beast::system_error const& se){
 							if(se.code() != boost::beast::websocket::error::closed){
@@ -52,6 +52,7 @@ int main() {
 							}
 						}
 					}
+					delete ClientDB;
 				} 
           	}.detach();
         }

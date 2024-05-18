@@ -30,23 +30,25 @@ DBManager::~DBManager(){
     }
 }
 
+enum operations {Register = 0, getMessage, sendMessage};
+
 std::string DBManager::Request(std::string request)
 {
     parseJson(request);
     std::string answer="empty";
     switch(type)
     {
-        case 0:
+        case Register:		//0
             answer = registerRequest();
             std::cout << "registerRequest: " << login << " : " << password << std::endl;
             break;
-        case 1:
+        case getMessage:	//1
             if(checkLogin())
             {
                 answer = getMessageRequest();
             }
             break;
-        case 2:
+        case sendMessage: 	//2
             if(checkLogin())
             {
                 answer = sendMessageRequest();
@@ -91,8 +93,8 @@ std::string DBManager::sendMessageRequest()
 	std::cout << "Starting sending message..." << std::endl;
 	try{
 		pqxx::work w(*c);
-		std::cout << message << " " << login << " " << chatID << std::endl;
-		w.exec_params("INSERT INTO messages(content, author_id, chat_id) VALUES($1, $2, $3);", message, login, chatID);
+		std::cout << message << " " << login << " " << chat_id << std::endl;
+		w.exec_params("INSERT INTO messages(content, author_id, chat_id) VALUES($1, $2, $3);", message, login, chat_id);
 		w.commit();
 	}
 	catch(const std::exception& e){
@@ -102,7 +104,17 @@ std::string DBManager::sendMessageRequest()
     
 }
 std::string DBManager::getMessageRequest()
-{
+{   
+    std::cout << "Starting getting messages..." << std::endl;
+    try{
+    pqxx::work w(*c);
+    pqxx::result chat_messages = w.exec_params("SELECT content FROM messages WHERE chat_id = $1 LIMIT 100 OFFSET $2;", chat_id, offset * 100);
+    for(auto row : chat_messages){
+	std::cout << row[0] << std::endl;
+    }
+
+    w.commit();
+    }catch(std::exception& e){}
     return "NOT READY";
 }
 
@@ -161,18 +173,18 @@ void DBManager::parseJson(std::string request)
     try{login = json["username"].get<std::string>();}catch(std::exception& e){}
     try{password = json["password"].get<std::string>();}catch(std::exception& e){}
     try{message = json["message"].get<std::string>();}catch(std::exception& e){}
-    try{chatID = (int)json["chatID"];}catch(std::exception& e){}
+    try{chat_id = (int)json["chatID"];}catch(std::exception& e){}
     try{type = (int)json["type"];}catch(std::exception& e){}
-    
+    try{offset = (int)json["offset"];}catch(std::exception& e){}
     
     
     std::cout << "Parsing completed" << std::endl;
     std::cout << "Login: " << login << std::endl;
     std::cout << "Password: " << password << std::endl;
     std::cout << "Message: " << message << std::endl;
-    std::cout << "ChatID: " << chatID << std::endl;
+    std::cout << "ChatID: " << chat_id << std::endl;
     std::cout << "type: " << type << std::endl;
-
+    std::cout << "offset: " << offset << std::endl;
 }
 
 bool DBManager::checkLogin()
