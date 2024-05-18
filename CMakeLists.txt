@@ -12,6 +12,16 @@ find_package(Boost REQUIRED COMPONENTS system)
 file(GLOB_RECURSE SERVER_SOURCES "server/src/*.cpp")
 add_executable(server ${SERVER_SOURCES})
 
+# (First set LIBVERSION to the libpqxx version you have.)
+set(libpqxxdir "libpqxx-${LIBVERSION}")
+
+# You can usually skip building the tests.
+#set(SKIP_BUILD_TEST ON)
+
+set(BUILD_SHARED_LIBS OFF)
+
+add_subdirectory(deps/libpqxx)
+
 target_link_libraries(server PUBLIC pthread pq pqxx)
 
 

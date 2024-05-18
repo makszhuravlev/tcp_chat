@@ -1,0 +1,1 @@
+ -I/usr/include -g -O2 -fvisibility=hidden -fvisibility-inlines-hidden
