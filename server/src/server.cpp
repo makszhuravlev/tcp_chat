@@ -1,6 +1,7 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
 #include <iostream>
+#include <memory>
 #include <thread>
 #include <string>
 #include "../include/DBManager.hpp"
@@ -35,7 +36,8 @@ int main() {
 							std::cout << message << std::endl;
 							ClientDB->Request(message);
 							ws.write(buffer.data());
-							std::cout << "Disconnecting..." << std::endl;
+							delete ClientDB;
+
 						}
 						catch(boost::beast::system_error const& se){
 							if(se.code() != boost::beast::websocket::error::closed){

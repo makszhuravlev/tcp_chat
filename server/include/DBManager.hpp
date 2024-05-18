@@ -26,11 +26,15 @@ public:
     DBManager();
     ~DBManager();
 
+    std::string Request(std::string request);
     void registerRequest();
     void sendMessageRequest();
     void getMessageRequest();
-    std::string Request(std::string request);
+    void checkLoginRequest();
+    
+
     //tools;
+    void printUsers();
     void parseJson(std::string request);
     bool checkLogin()
     {

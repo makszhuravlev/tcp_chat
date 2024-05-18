@@ -21,9 +21,12 @@ DBManager::DBManager()
 }
 
 DBManager::~DBManager(){
+    std::cout << "Disconnecting..." << std::endl;
     std::cout << "DBManager_ID:" << c << std::endl;
-    if(c != nullptr){
+    
+    if(c != nullptr){ 
         c->close();
+        c = nullptr;
     }
 }
 
@@ -58,8 +61,9 @@ std::string DBManager::Request(std::string request)
 void DBManager::registerRequest()
 {
     std::cout << "Starting receive process" << std::endl;
-    std::string result = "err";
+
     try{
+        std::string result = "err";
         pqxx::work w(*c);
         pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
         if(check_login.size() == 0){
@@ -69,14 +73,6 @@ void DBManager::registerRequest()
         else
         {
             std::cout << "Login has been claimed, cancel..." << std::endl;
-        }
-        
-        pqxx::result result_query = w.exec("SELECT * FROM users");
-        for(auto res : result_query){
-            for(auto r : res){
-                std::cout << r << " ";
-            }
-            std::cout << std::endl;
         }
         w.commit();
     }
@@ -92,7 +88,7 @@ void DBManager::sendMessageRequest()
 	try{
 		pqxx::work w(*c);
 		std::cout << message << " " << login << " " << chatID << std::endl;
-		w.exec_params("INSERT INTO messages(content, sender, chat) VALUES($1, $2, $3);", message, login, chatID);
+		w.exec_params("INSERT INTO messages(content, author_id, chat_id) VALUES($1, $2, $3);", message, login, chatID);
 		w.commit();
 	}
 	catch(const std::exception& e){
@@ -102,6 +98,51 @@ void DBManager::sendMessageRequest()
 void DBManager::getMessageRequest()
 {
 
+}
+
+void DBManager::checkLoginRequest()
+{
+    std::cout << "Printing all users:" << std::endl;
+    try{
+        std::string result = "err";
+        pqxx::work w(*c);
+        pqxx::result result_query = w.exec("SELECT password FROM users WHERE login = '"+ login +"';");
+        if(result == password) 
+        {
+            //return "true";
+            std::cout << "password correct" << std::endl;
+        }
+        {
+            std::cout << "password not correct" << std::endl;
+        }
+        
+        w.commit();
+    }
+    catch(std::exception const &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+void DBManager::printUsers()
+{
+    std::cout << "Printing all users:" << std::endl;
+    try{
+        std::string result = "err";
+        pqxx::work w(*c);
+        pqxx::result result_query = w.exec("SELECT * FROM users");
+        for(auto res : result_query){
+            for(auto r : res){
+                std::cout << r << " ";
+            }
+            std::cout << std::endl;
+        }
+        w.commit();
+    }
+    catch(std::exception const &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
 }
 
 void DBManager::parseJson(std::string request)
