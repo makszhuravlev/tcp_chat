@@ -1,10 +1,14 @@
+let username = sessionStorage.getItem('username');
+let password = sessionStorage.getItem('password');
+console.log(username, password);
 const chatData = [
     {
         "id": 1,
         "name": "Привет приветович",
         "messages": [
             {"sender": "received", "text": "почему?"},
-            {"sender": "sent", "text": "покачену"}
+            {"sender": "sent", "text": "покачену"},
+            {"sender": "received", "text": "твои логин и пароль " + username + "    " + password}
         ]
     },
     {
@@ -16,7 +20,7 @@ const chatData = [
         ]
     }
 ];
-
+console.log(username, password)
 let currentChatId = 1;
 
 function loadChatList() {
@@ -90,9 +94,7 @@ function sendMessage() {
             document.querySelector('.messages').appendChild(messageContainer);
             input.value = '';
             input.focus();
-            let username = localStorage.getItem('username');
-            let password = localStorage.getItem('password');
-            console.log(username, password);
+            
             scrollToBottom();
         }
     }

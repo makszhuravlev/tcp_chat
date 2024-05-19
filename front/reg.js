@@ -5,8 +5,6 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const errorMessage = document.getElementById('error');
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
     if (password !== confirmPassword) {
         errorMessage.textContent = 'Пароли не совпадают';
     } else {
@@ -31,6 +29,8 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             const response = JSON.parse(event.data);
             if (event.data === "true") {
                 window.location.assign('main.html')
+                sessionStorage.setItem('username', username);
+                sessionStorage.setItem('password', password);
                 console.log('забавный челик проходи');
             }
             else if (event.data === "false") {
