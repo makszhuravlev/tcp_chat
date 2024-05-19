@@ -32,7 +32,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             if (event.data === "true") {
                 console.log('забавный челик проходи');
             }
-            if (event.data === "false") {
+            else if (event.data === "false") {
                 console.log('отказ')
             } 
             else {
