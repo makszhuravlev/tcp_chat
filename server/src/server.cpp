@@ -37,7 +37,7 @@ int main() {
 							std::string answer = ClientDB->Request(message);
 							buffer.clear();
 							//////АААААА НЕ ОТЧИЩАЕТСЧОМЯЧ БУФЕР БЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯТЬ ЗАЕБАЛО БЛТЬ СУКА НАХУУЙ
-							boost::beast::ostream(buffer) << answer + answer;
+							boost::beast::ostream(buffer) << answer;
 							ws.write(buffer.data());
 /*
 							for (int i = 0; i < 100; i++) {

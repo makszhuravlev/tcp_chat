@@ -30,6 +30,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
             console.log('Message from server ', event.data);
             const response = JSON.parse(event.data);
             if (event.data === "true") {
+                window.location.assign('main.html')
                 console.log('забавный челик проходи');
             }
             else if (event.data === "false") {
