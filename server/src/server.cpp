@@ -51,8 +51,8 @@ int main() {
 								break;
 							}
 						}
+						delete ClientDB;
 					}
-					delete ClientDB;
 				} 
           	}.detach();
         }

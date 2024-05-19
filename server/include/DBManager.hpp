@@ -20,6 +20,7 @@ private:
     std::string message = "";
     int chat_id = 0;
     int offset = 0;
+    std::vector<std::string> members = {};
     void connect();
   
 public:
@@ -32,6 +33,7 @@ public:
     std::string sendMessageRequest();
     std::string getMessageRequest();
     std::string checkLoginRequest();
+    std::string createChat();
     
 
     //tools;

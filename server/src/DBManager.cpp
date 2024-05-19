@@ -30,7 +30,7 @@ DBManager::~DBManager(){
     }
 }
 
-enum operations {Register = 0, getMessage, sendMessage};
+enum operations {Register = 0, getMessage, sendMessage, createChat};
 
 std::string DBManager::Request(std::string request)
 {
@@ -53,6 +53,13 @@ std::string DBManager::Request(std::string request)
             {
                 answer = sendMessageRequest();
             }
+	    break;
+	case 3:
+	    if(checkLogin())
+	    {
+		answer = createChat();
+	    }
+	    break;
         default:
             break;
     }
@@ -118,6 +125,24 @@ std::string DBManager::getMessageRequest()
     return "NOT READY";
 }
 
+std::string DBManager::createChat()
+{
+	std::cout << "Creating chat..." << std::endl;
+	try{
+		pqxx::work w(*c);
+		std::string members_to_str = "";
+		for(auto member : members){
+			members_to_str += "'" + member + "', ";
+		}
+		members_to_str.pop_back();
+		members_to_str.pop_back();
+		std::cout << members_to_str << std::endl;
+		w.exec("INSERT INTO chats(members) VALUES(ARRAY[ " + members_to_str + "]);");
+		w.commit();
+	}catch(std::exception& e){}
+	return "null";
+}
+
 std::string DBManager::checkLoginRequest()
 {
     std::cout << "Printing all users:" << std::endl;
@@ -176,6 +201,15 @@ void DBManager::parseJson(std::string request)
     try{chat_id = (int)json["chatID"];}catch(std::exception& e){}
     try{type = (int)json["type"];}catch(std::exception& e){}
     try{offset = (int)json["offset"];}catch(std::exception& e){}
+    try{
+        if (json.contains("members") && json["members"].is_array()) {
+        const Json& membersArray = json["members"];
+
+        for (const auto& member : membersArray) {
+            members.push_back(member.get<std::string>());
+        }
+        }
+    }catch(std::exception& e){}
     
     
     std::cout << "Parsing completed" << std::endl;
