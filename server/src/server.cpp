@@ -51,10 +51,12 @@ int main() {
 								break;
 							}
 						}
-						delete ClientDB;
+		//				delete ClientDB;
 					}
+					delete ClientDB;
 				} 
           	}.detach();
+//delete ClientDB;
         }
 
     } catch (std::exception const& e) {
