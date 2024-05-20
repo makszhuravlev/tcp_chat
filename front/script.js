@@ -4,6 +4,10 @@ console.log(username, password);
 console.log(username, password);
 // const chdatData = {"id":1, "massages": [{"user":"sent","massege":"kakoyto text"}, {"user":"recived", "massege":"Huy znaet"}]};
 
+// Тестовые данные для
+
+// Тест
+
 let currentChatId = 1;
 var socket = new WebSocket('ws://localhost:8080');
         socket.addEventListener('open', function (event) {
@@ -65,26 +69,26 @@ function loadChatList() {
         chatListElement.appendChild(chatItem);
     });
 }
-
 function loadChatMessages(chatId) {
-    const messagesElement = document.getElementById('messages');
-    messagesElement.innerHTML = '';
-
-    const chat = chatData.find(c => c.id === chatId);
-
-    if (chat) {
-        chat.messages.forEach(message => {
+    var socket = new WebSocket('ws://localhost:8080');
+    socket.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+        const response = event.data;
+        response.forEach(message => {
+            console.log(message.content);
             const messageContainer = document.createElement('div');
-            messageContainer.textContent = message.text;
-            if (message.sender === "received") {
-                messageContainer.classList.add('message', 'message-received');
-            } else if (message.sender === "sent") {
+            messageContainer.textContent = message.content;
+            if (message.author_id === username) {
                 messageContainer.classList.add('message', 'message-sent');
+            } else{
+                messageContainer.classList.add('message', 'message-received');
             }
 
             messagesElement.appendChild(messageContainer);
         });
-    }
+
+    });
+
     scrollToBottom();
 }
 
