@@ -81,13 +81,24 @@ std::string DBManager::getChats(){
 	std::cout << "Starting getting chats by id..." << std::endl;
 	try{
 		pqxx::work w(*c);
-		pqxx::result chats = w.exec_params("SELECT * FROM chats WHERE $1 = ANY(members)", login);
+        Json jsonMassive;
+        std::string result = "";
+		pqxx::result chats = w.exec_params("SELECT chat_id, members, name FROM chats WHERE $1 = ANY(members)", login);
 		for(auto row : chats){
-			for(auto r : row){
-				std::cout << r << " ";
-			}
-			std::cout << std::endl;
-		}
+			// for(auto r : row){
+			// 	std::cout << r << " ";
+			// }
+            // std::cout << std::endl;
+
+            Json jsonmessage;
+            jsonmessage["chat_id"] = std::stoi(row[0].c_str());
+            //jsonmessage["members"] = row[1].c_str();
+            jsonmessage["name"] = row[2].c_str();
+            jsonMassive.push_back(jsonmessage);
+        }
+        result += jsonMassive.dump();
+        w.commit();
+        return result;
 	}
 	catch(std::exception& e){
 		std::cerr << e.what() << std::endl;
@@ -141,17 +152,27 @@ std::string DBManager::getMessageRequest()
 {   
     std::cout << "Starting getting messages..." << std::endl;
     try{
-    pqxx::work w(*c);
-    pqxx::result chat_messages = w.exec_params("SELECT content FROM messages WHERE chat_id = $1 LIMIT 100 OFFSET $2;", chat_id, offset * 100);
-
-    for(auto row : chat_messages){
-        Json jsonmessage;
-	    std::cout << row[0] << std::endl;
+        pqxx::work w(*c);
+        pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 LIMIT 100 OFFSET $2;", chat_id, offset * 100);
+        std::string result = "";
+        Json jsonMassive;
+        for(auto row : chat_messages)
+        {
+            Json jsonmessage;
+            jsonmessage["content"] = row[0].c_str();
+            jsonmessage["chat_id"] = row[1].c_str();
+            jsonmessage["author_id"] = std::stoi(row[2].c_str());
+            jsonmessage["message_id"] = std::stoi(row[3].c_str());
+            jsonMassive.push_back(jsonmessage);
+        }
+        result += jsonMassive.dump();
+        w.commit();
+        return result;
     }
-
-    w.commit();
-    }catch(std::exception& e){}
-    return "NOT READY";
+    catch(std::exception& e){
+        std::cout << "something wrong" << e.what() << std::endl;
+    }
+    return "somethinig wrong";
 }
 
 std::string DBManager::createChat()
@@ -166,7 +187,7 @@ std::string DBManager::createChat()
 		members_to_str.pop_back();
 		members_to_str.pop_back();
 		std::cout << members_to_str << std::endl;
-		w.exec("INSERT INTO chats(members) VALUES(ARRAY[ " + members_to_str + "]);");
+		w.exec("INSERT INTO chats(members, name) VALUES(ARRAY[ " + members_to_str + "], " + name + ");");
 		w.commit();
 	}catch(std::exception& e){}
 	return "null";
@@ -226,6 +247,7 @@ void DBManager::parseJson(std::string request)
     try{login = json["username"].get<std::string>();}catch(std::exception& e){}
     try{password = json["password"].get<std::string>();}catch(std::exception& e){}
     try{message = json["message"].get<std::string>();}catch(std::exception& e){}
+    try{name = json["name"].get<std::string>();}catch(std::exception& e){}
     try{chat_id = (int)json["chatID"];}catch(std::exception& e){}
     try{type = (int)json["type"];}catch(std::exception& e){}
     try{offset = (int)json["offset"];}catch(std::exception& e){}
