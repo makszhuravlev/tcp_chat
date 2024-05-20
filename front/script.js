@@ -1,33 +1,44 @@
 let username = sessionStorage.getItem('username');
 let password = sessionStorage.getItem('password');
 console.log(username, password);
-const chatData = [
-    {
-        "id": 1,
-        "name": "Привет приветович",
-        "messages": [
-            {"sender": "received", "text": "почему?"},
-            {"sender": "sent", "text": "покачену"},
-            {"sender": "received", "text": "твои логин и пароль " + username + "    " + password}
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Другой чат",
-        "messages": [
-            {"sender": "received", "text": "Привет!"},
-            {"sender": "sent", "text": "Здравствуй!"}
-        ]
-    }
-];
-console.log(username, password)
-let currentChatId = 1;
+console.log(username, password);
 
+
+let currentChatId = 1;
+var socket = new WebSocket('ws://localhost:8080');
+        socket.addEventListener('open', function (event) {
+        console.log('Connected to WS Server');
+        
+        var jsonData = {
+            type: 4,
+            username: username,
+            password: password
+        };
+        
+        var jsonString = JSON.stringify(jsonData);
+        
+        console.log("Sending:", jsonString);
+        socket.send(jsonString);
+        console.log('Message from server ', event.data);
+        //const chatData = JSON.parse(event.data); - когда будет готов сервер
+        
+
+        socket.addEventListener('error', function (event) {
+            console.error('WebSocket error: ', event);
+            document.getElementById("error").textContent="Ошибка соединения с сервером";
+        });
+    });
+// Тестовые данные для нового JSON 
+const chatData = {"chats" : [{"id":1,"name": "хуй хуевич"},
+{"id":2,"name": "пиездец пиздецович"},{"id":2,"name": "пиездец пиздецович"}]};
+//TEST
 function loadChatList() {
     const chatListElement = document.getElementById('chatList');
     chatListElement.innerHTML = '';
 
-    chatData.forEach(chat => {
+    chats = chatData.chats;
+
+    chats.forEach(chat => {
         const chatItem = document.createElement('div');
         chatItem.classList.add('chat-item');
         chatItem.setAttribute('data-chat-id', chat.id);
