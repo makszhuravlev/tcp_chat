@@ -21,15 +21,16 @@ int main() {
 			tcp::socket socket{ioc};
 			acceptor.accept(socket);
 			std::cout << "socket connected" << std::endl;
-			DBManager* ClientDB = new DBManager();
+			try{
 			std::thread{
-				[socket{std::move(socket)}, &ClientDB](){
+				[socket{std::move(socket)}](){
 					boost::beast::websocket::stream<tcp::socket> ws {std::move(const_cast<tcp::socket&>(socket))};
-					
+					DBManager* ClientDB = new DBManager();
 					ws.accept();
 					
 					while(true){
 						try{
+							
 							boost::beast::flat_buffer buffer;
 							ws.read(buffer);
 							auto message = boost::beast::buffers_to_string(buffer.cdata());
@@ -56,6 +57,8 @@ int main() {
 					delete ClientDB;
 				} 
           	}.detach();
+			}
+			catch(std::exception& e){}
 //delete ClientDB;
         }
 

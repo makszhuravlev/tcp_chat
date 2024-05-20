@@ -123,6 +123,7 @@ std::string DBManager::registerRequest()
         else
         {
             std::cout << "Login has been claimed, cancel..." << std::endl;
+            w.commit();
             return "false";
         }
     }
@@ -200,17 +201,21 @@ std::string DBManager::checkLoginRequest()
         std::string result = "err";
         pqxx::work w(*c);
         pqxx::result result_query = w.exec("SELECT password FROM users WHERE login = '"+ login +"';");
-        if(result == password) 
+        std:: cout << "---------" << result_query[0][0].c_str() << ":" << password << std::endl;
+        if(result_query[0][0].c_str() == password) 
         {
             std::cout << "password correct" << std::endl;
+            w.commit();
             return "true";
         }
+        else
         {
             std::cout << "password not correct" << std::endl;
+            w.commit();
             return "false";
         }
         
-        w.commit();
+        
     }
     catch(std::exception const &e)
     {
