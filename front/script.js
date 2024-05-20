@@ -2,7 +2,7 @@ let username = sessionStorage.getItem('username');
 let password = sessionStorage.getItem('password');
 console.log(username, password);
 console.log(username, password);
-
+// const chdatData = {"id":1, "massages": [{"user":"sent","massege":"kakoyto text"}, {"user":"recived", "massege":"Huy znaet"}]};
 
 let currentChatId = 1;
 var socket = new WebSocket('ws://localhost:8080');
