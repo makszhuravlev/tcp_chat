@@ -19,6 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         
         console.log("Sending:", jsonString);
         socket.send(jsonString);
+<<<<<<< HEAD
         
     });
 
@@ -34,4 +35,38 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     socket.addEventListener('close', function (event) {
         console.log('WebSocket connection closed: ', event);
     });
+=======
+
+        socket.addEventListener('message', function (event) {
+            console.log('Message from server ', event.data);
+            const response = JSON.parse(event.data);
+            if (event.data === "true") {
+                window.location.assign('main.html')
+                sessionStorage.setItem('username', username);
+                sessionStorage.setItem('password', password);
+                console.log('забавный челик проходи');
+            }
+            else if (event.data === "false") {
+                console.log('отказ')
+            } 
+            else {
+                console.log('ЕБАТЬ КОПАТЬ')
+                console.log(event.data)
+            }
+        });
+        socket.addEventListener('error', function (event) {
+            console.error('WebSocket error: ', event);
+            alert("Ошибка соединения с сервером. Попробуйте ещё раз или зайдите позже!");
+            document.getElementById("error").textContent="Ошибка соединения с сервером";
+    
+        });
+    
+    
+        socket.addEventListener('close', function (event) {
+            console.log('WebSocket connection closed: ', event);
+        });
+    });
+
+    
+>>>>>>> fa04d624e9de590af33271e86c2bedcbc4d179ec
 });
