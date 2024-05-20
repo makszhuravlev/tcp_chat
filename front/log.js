@@ -19,24 +19,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         
         console.log("Sending:", jsonString);
         socket.send(jsonString);
-<<<<<<< HEAD
-        
-    });
-
-    
-    socket.addEventListener('error', function (event) {
-        console.error('WebSocket error: ', event);
-        alert("Ошибка соединения с сервером. Попробуйте ещё раз или зайдите позже!");
-        document.getElementById("error").textContent="Ошибка соединения с сервером";
-
-    });
-
-
-    socket.addEventListener('close', function (event) {
-        console.log('WebSocket connection closed: ', event);
-    });
-=======
-
         socket.addEventListener('message', function (event) {
             console.log('Message from server ', event.data);
             const response = JSON.parse(event.data);
@@ -60,13 +42,12 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             document.getElementById("error").textContent="Ошибка соединения с сервером";
     
         });
-    
-    
-        socket.addEventListener('close', function (event) {
-            console.log('WebSocket connection closed: ', event);
-        });
     });
 
     
->>>>>>> fa04d624e9de590af33271e86c2bedcbc4d179ec
+
+
+    socket.addEventListener('close', function (event) {
+        console.log('WebSocket connection closed: ', event);
+    });
 });
