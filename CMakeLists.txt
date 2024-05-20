@@ -25,6 +25,9 @@ set(libpqxxdir "libpqxx-${LIBVERSION}")
 # Отключение сборки тестов
 set(SKIP_BUILD_TEST ON)
 
+# 
+set(CMAKE_CXX_FLAGS "-Wdeprecated-declarations")
+
 # Настройка сборки статических библиотек
 #set(BUILD_SHARED_LIBS OFF)
 

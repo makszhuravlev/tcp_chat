@@ -30,7 +30,6 @@ DBManager::~DBManager(){
     }
 }
 
-enum operations {Register = 0, getMessage, sendMessage, chatCreate, listChats};
 
 std::string DBManager::Request(std::string request)
 {
@@ -38,34 +37,40 @@ std::string DBManager::Request(std::string request)
     std::string answer="empty";
     switch(type)
     {
-        case Register:		//0
+        case Register:		// 0
             answer = registerRequest();
             std::cout << "registerRequest: " << login << " : " << password << std::endl;
             break;
-        case getMessage:	//1
+        case getMessage:	// 1
             if(checkLogin())
             {
                 answer = getMessageRequest();
             }
             break;
-        case sendMessage: 	//2
+        case sendMessage: 	// 2
             if(checkLogin())
             {
                 answer = sendMessageRequest();
             }
 	    break;
-	case chatCreate:
-	    if(checkLogin())
-	    {
-		answer = createChat();
-	    }
-	    break;
-	case listChats:
-	    if(checkLogin()){
-		answer = getChats();
-	    }
-        default:
+        case chatCreate:   // 3
+            if(checkLogin())
+            {
+                answer = createChat();
+            }
             break;
+        case listChats:     // 4
+            if(checkLogin())
+            {
+                answer = getChats();
+            }
+        case Login:         // 5
+            std::cout << "Login request: " << login << " : " << password << std::endl;
+            return checkLoginRequest();
+
+            default:
+                return "Инвалид-запрос;(";
+                break;
     }
 
     return answer;
@@ -138,7 +143,9 @@ std::string DBManager::getMessageRequest()
     try{
     pqxx::work w(*c);
     pqxx::result chat_messages = w.exec_params("SELECT content FROM messages WHERE chat_id = $1 LIMIT 100 OFFSET $2;", chat_id, offset * 100);
+
     for(auto row : chat_messages){
+        Json jsonmessage;
 	    std::cout << row[0] << std::endl;
     }
 
@@ -167,14 +174,13 @@ std::string DBManager::createChat()
 
 std::string DBManager::checkLoginRequest()
 {
-    std::cout << "Printing all users:" << std::endl;
+    std::cout << "CheckLoginRequest:" << std::endl;
     try{
         std::string result = "err";
         pqxx::work w(*c);
         pqxx::result result_query = w.exec("SELECT password FROM users WHERE login = '"+ login +"';");
         if(result == password) 
         {
-            //return "true";
             std::cout << "password correct" << std::endl;
             return "true";
         }
