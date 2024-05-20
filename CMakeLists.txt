@@ -25,6 +25,9 @@ set(libpqxxdir "libpqxx-${LIBVERSION}")
 # Отключение сборки тестов
 set(SKIP_BUILD_TEST ON)
 
+# 
+set(CMAKE_CXX_FLAGS "-Wno-deprecated-declarations")
+
 # Настройка сборки статических библиотек
 #set(BUILD_SHARED_LIBS OFF)
 
@@ -39,7 +42,7 @@ target_link_libraries(server PUBLIC pthread pq pqxx)
 file(COPY ${CMAKE_SOURCE_DIR}/server/data/ DESTINATION ${CMAKE_BINARY_DIR}/server_data)
 
 # Установка целевого файла
-install(TARGETS server RUNTIME DESTINATION bin)
+#install(TARGETS server RUNTIME DESTINATION bin)
 
 # Настройки для создания пакета
 set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
