@@ -10,7 +10,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         console.log('Connected to WS Server');
         
         var jsonData = {
-            type: 1,
+            type: 5,
             username: username,
             password: password
         };
