@@ -20,6 +20,7 @@ private:
     std::string login = "";
     std::string password = "";
     std::string message = "";
+    std::string name = "";
     int chat_id = 0;
     int offset = 0;
     std::vector<std::string> members = {};
@@ -47,3 +48,31 @@ public:
 
 };
 
+
+
+
+
+
+
+/*
+
+
+    [
+        {"content": "asdfasdf", "chat_id": 4, "author_id": "фыва", "message_id": 44},
+        {"content": "asdfasdf", "chat_id": 4, "author_id": "фыва", "message_id": 43},
+        {"content": "asdfasdf", "chat_id": 4, "author_id": "фыва", "message_id": 42}
+    ]
+
+
+*/
+/*
+
+// create an empty structure (null)
+json j;
+
+// add a number that is stored as double (note the implicit conversion of j to an object)
+j["pi"] = 3.141;
+
+// add a Boolean that is stored as bool
+j["happy"] = true;
+*/
