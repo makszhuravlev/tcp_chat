@@ -21,6 +21,7 @@ private:
     std::string password = "";
     std::string message = "";
     std::string name = "";
+    std::string email = "";
     int chat_id = 0;
     int offset = 0;
     std::vector<std::string> members = {};

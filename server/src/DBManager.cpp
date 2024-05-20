@@ -113,10 +113,10 @@ std::string DBManager::registerRequest()
     try{
         std::string result = "err";
         pqxx::work w(*c);
-        pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
-        if(check_login.size() == 0){
+        //pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
+        if(/*check_login.size() == 0*/ true){
             std::cout << "Starting registration process..." << std::endl;
-            w.exec("INSERT INTO users VALUES ('" + login + "', '" + password + "');");
+            w.exec("INSERT INTO users VALUES ('" + login + "', '" + password + "', '" + email + "' );");
             return "true";
         }
         else
@@ -128,7 +128,7 @@ std::string DBManager::registerRequest()
     }
     catch(std::exception const &e)
     {
-        std::cerr << e.what() << std::endl;
+        std::cerr << "ОШИБКА" <<  e.what() << std::endl;
     }
     return "BRUH";
 }
@@ -248,6 +248,7 @@ void DBManager::parseJson(std::string request)
     try{password = json["password"].get<std::string>();}catch(std::exception& e){}
     try{message = json["message"].get<std::string>();}catch(std::exception& e){}
     try{name = json["name"].get<std::string>();}catch(std::exception& e){}
+    try{email = json["email"].get<std::string>();}catch(std::exception& e){}
     try{chat_id = (int)json["chatID"];}catch(std::exception& e){}
     try{type = (int)json["type"];}catch(std::exception& e){}
     try{offset = (int)json["offset"];}catch(std::exception& e){}
