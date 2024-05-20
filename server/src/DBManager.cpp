@@ -113,10 +113,11 @@ std::string DBManager::registerRequest()
     try{
         std::string result = "err";
         pqxx::work w(*c);
-        //pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
-        if(/*check_login.size() == 0*/ true){
+        pqxx::result check_login = w.exec("SELECT * FROM users WHERE login='"+login+"';");
+        if(check_login.size() == 0){
             std::cout << "Starting registration process..." << std::endl;
-            w.exec("INSERT INTO users VALUES ('" + login + "', '" + password + "', '" + email + "' );");
+            w.exec_params("INSERT INTO users(login, password, email) VALUES ($1, $2, $3);", login, password, email);
+            w.commit();
             return "true";
         }
         else
@@ -124,7 +125,6 @@ std::string DBManager::registerRequest()
             std::cout << "Login has been claimed, cancel..." << std::endl;
             return "false";
         }
-        w.commit();
     }
     catch(std::exception const &e)
     {
