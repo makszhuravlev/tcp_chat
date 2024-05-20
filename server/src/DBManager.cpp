@@ -30,7 +30,7 @@ DBManager::~DBManager(){
     }
 }
 
-enum operations {Register = 0, getMessage, sendMessage, createChat};
+enum operations {Register = 0, getMessage, sendMessage, chatCreate, listChats};
 
 std::string DBManager::Request(std::string request)
 {
@@ -54,18 +54,40 @@ std::string DBManager::Request(std::string request)
                 answer = sendMessageRequest();
             }
 	    break;
-	case 3:
+	case chatCreate:
 	    if(checkLogin())
 	    {
 		answer = createChat();
 	    }
 	    break;
+	case listChats:
+	    if(checkLogin()){
+		answer = getChats();
+	    }
         default:
             break;
     }
 
     return answer;
 
+}
+
+std::string DBManager::getChats(){
+	std::cout << "Starting getting chats by id..." << std::endl;
+	try{
+		pqxx::work w(*c);
+		pqxx::result chats = w.exec_params("SELECT * FROM chats WHERE $1 = ANY(members)", login);
+		for(auto row : chats){
+			for(auto r : row){
+				std::cout << r << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
+	catch(std::exception& e){
+		std::cerr << e.what() << std::endl;
+	}
+	return "null";
 }
 
 std::string DBManager::registerRequest()

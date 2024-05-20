@@ -34,7 +34,7 @@ public:
     std::string getMessageRequest();
     std::string checkLoginRequest();
     std::string createChat();
-    
+    std::string getChats();
 
     //tools;
     void printUsers();
