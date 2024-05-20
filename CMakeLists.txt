@@ -39,7 +39,7 @@ target_link_libraries(server PUBLIC pthread pq pqxx)
 file(COPY ${CMAKE_SOURCE_DIR}/server/data/ DESTINATION ${CMAKE_BINARY_DIR}/server_data)
 
 # Установка целевого файла
-install(TARGETS server RUNTIME DESTINATION bin)
+#install(TARGETS server RUNTIME DESTINATION bin)
 
 # Настройки для создания пакета
 set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})

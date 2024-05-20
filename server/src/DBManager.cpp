@@ -139,7 +139,7 @@ std::string DBManager::getMessageRequest()
     pqxx::work w(*c);
     pqxx::result chat_messages = w.exec_params("SELECT content FROM messages WHERE chat_id = $1 LIMIT 100 OFFSET $2;", chat_id, offset * 100);
     for(auto row : chat_messages){
-	std::cout << row[0] << std::endl;
+	    std::cout << row[0] << std::endl;
     }
 
     w.commit();
@@ -224,6 +224,7 @@ void DBManager::parseJson(std::string request)
     try{type = (int)json["type"];}catch(std::exception& e){}
     try{offset = (int)json["offset"];}catch(std::exception& e){}
     try{
+        members = {};
         if (json.contains("members") && json["members"].is_array()) {
         const Json& membersArray = json["members"];
 
