@@ -132,9 +132,7 @@ document.getElementById('chatinput').addEventListener('keydown', function(event)
     }
 });
 
-document.getElementById('sendButtonChat').addEventListener('keydown', function(event) {
-        sendReqNewChat();
-});
+document.getElementById('sendButtonChat').addEventListener('click', sendReqNewChat);
 
 function sendReqNewChat(){
     var socket = new WebSocket('ws://localhost:8080');
