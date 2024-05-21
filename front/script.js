@@ -143,7 +143,7 @@ document.getElementById('chatinput').addEventListener('keydown', function(event)
             
             console.log("Sending:", jsonString);
             socket.send(jsonString);
-            console.log(event.data)
+            console.log(event.data + "+++++++++++++")
             
     
             socket.addEventListener('error', function (event) {
