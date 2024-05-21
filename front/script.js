@@ -128,6 +128,7 @@ document.getElementById('messageInput').addEventListener('keydown', function(eve
 });
 document.getElementById('chatinput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
+        var socket = new WebSocket('ws://localhost:8080');
         socket.addEventListener('open', function (event) {
             console.log('Connected to WS Server');
             
