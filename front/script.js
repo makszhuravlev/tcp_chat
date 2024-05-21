@@ -128,9 +128,30 @@ document.getElementById('messageInput').addEventListener('keydown', function(eve
 });
 document.getElementById('chatinput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
+        socket.addEventListener('open', function (event) {
+            console.log('Connected to WS Server');
+            
+            var jsonData = {
+                type: 3,
+                username: username,
+                password: password,
+                members:[username, document.getElementById('chatinput').value.trim()]
+            };
+            
+            var jsonString = JSON.stringify(jsonData);
+            
+            console.log("Sending:", jsonString);
+            socket.send(jsonString);
+            console.log(event.data)
+            
+    
+            socket.addEventListener('error', function (event) {
+                console.error('WebSocket error: ', event);
+                document.getElementById("error").textContent="Ошибка соединения с сервером";
+            });
+        });
+        
         event.preventDefault();
-        console.log({"username":username,"password":password, type:3, "members":[username,  document.getElementById('chatinput').value.trim()]});
-        console.log()
     }
 });
 window.onload = function() {
