@@ -64,6 +64,7 @@ std::string DBManager::Request(std::string request)
             {
                 answer = getChats();
             }
+            break;
         case Login:         // 5
             std::cout << "Login request: " << login << " : " << password << std::endl;
             return checkLoginRequest();
@@ -72,7 +73,7 @@ std::string DBManager::Request(std::string request)
                 return "Инвалид-запрос;(";
                 break;
     }
-
+    std::cout<<answer;
     return answer;
 
 }
@@ -98,6 +99,7 @@ std::string DBManager::getChats(){
         }
         result += jsonMassive.dump();
         w.commit();
+        std::cout<<result;
         return result;
 	}
 	catch(std::exception& e){

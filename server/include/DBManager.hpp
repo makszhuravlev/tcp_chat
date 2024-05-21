@@ -10,7 +10,7 @@
 
 using Json = nlohmann::json;
 
-enum operations {Register = 0, getMessage, sendMessage, chatCreate, listChats, Login};
+enum operations {Register = 0, getMessage = 1, sendMessage = 2, chatCreate = 3, listChats = 4, Login = 5};
 
 class DBManager
 {

@@ -2,11 +2,7 @@ let username = sessionStorage.getItem('username');
 let password = sessionStorage.getItem('password');
 console.log(username, password);
 console.log(username, password);
-// const chdatData = {"id":1, "massages": [{"user":"sent","massege":"kakoyto text"}, {"user":"recived", "massege":"Huy znaet"}]};
 
-// Тестовые данные для
-
-// Тест
 
 let currentChatId = 1;
 var socket = new WebSocket('ws://localhost:8080');
@@ -23,8 +19,7 @@ var socket = new WebSocket('ws://localhost:8080');
         
         console.log("Sending:", jsonString);
         socket.send(jsonString);
-        console.log('Message from server ', event.data);
-        //const chatData = JSON.parse(event.data); - когда будет готов сервер
+
         
 
         socket.addEventListener('error', function (event) {
@@ -32,42 +27,45 @@ var socket = new WebSocket('ws://localhost:8080');
             document.getElementById("error").textContent="Ошибка соединения с сервером";
         });
     });
-// Тестовые данные для нового JSON 
-const chatData = {"chats" : [{"id":1,"name": "хуй хуевич"},
-{"id":2,"name": "пиездец пиздецович"},{"id":2,"name": "пиездец пиздецович"}]};
-//TEST
+
+    
 function loadChatList() {
     const chatListElement = document.getElementById('chatList');
     chatListElement.innerHTML = '';
-
-    chats = chatData.chats;
-
-    chats.forEach(chat => {
-        const chatItem = document.createElement('div');
-        chatItem.classList.add('chat-item');
-        chatItem.setAttribute('data-chat-id', chat.id);
-
-        const chatAvatar = document.createElement('div');
-        chatAvatar.classList.add('chat-avatar');
-
-        const chatInfo = document.createElement('div');
-        chatInfo.classList.add('chat-info');
-
-        const chatName = document.createElement('div');
-        chatName.classList.add('chat-name');
-        chatName.textContent = chat.name;
-
-        chatInfo.appendChild(chatName);
-        chatItem.appendChild(chatAvatar);
-        chatItem.appendChild(chatInfo);
-
-        chatItem.addEventListener('click', () => {
-            currentChatId = chat.id;
-            loadChatMessages(currentChatId);
+    socket.addEventListener('message', function (event) {
+        console.log('Message from server:', event.data);
+        const response = JSON.parse(event.data);
+        chats = response;     
+        chats.forEach(chat => {
+            const chatItem = document.createElement('div');
+            chatItem.classList.add('chat-item');
+            chatItem.setAttribute('data-chat-id', chat.chat_id);
+    
+            const chatAvatar = document.createElement('div');
+            chatAvatar.classList.add('chat-avatar');
+    
+            const chatInfo = document.createElement('div');
+            chatInfo.classList.add('chat-info');
+    
+            const chatName = document.createElement('div');
+            chatName.classList.add('chat-name');
+            chatName.textContent = chat.name;
+    
+            chatInfo.appendChild(chatName);
+            chatItem.appendChild(chatAvatar);
+            chatItem.appendChild(chatInfo);
+    
+            chatItem.addEventListener('click', () => {
+                currentChatId = chat.id;
+                loadChatMessages(currentChatId);
+            });
+    
+            chatListElement.appendChild(chatItem);
         });
-
-        chatListElement.appendChild(chatItem);
     });
+
+
+    
 }
 function loadChatMessages(chatId) {
     var socket = new WebSocket('ws://localhost:8080');
