@@ -158,10 +158,12 @@ function sendReqNewChat(){
                 console.error('WebSocket error: ', event);
                 document.getElementById("error").textContent="Ошибка соединения с сервером";
             });
+            window.location.assign('main.html')
         });
         
         event.preventDefault();
-}
+        
+    }
 
 window.onload = function() {
     loadChatList();
