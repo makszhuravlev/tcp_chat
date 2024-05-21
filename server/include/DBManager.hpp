@@ -20,7 +20,7 @@ private:
     std::string login = "";
     std::string password = "";
     std::string message = "";
-    std::string name = "";
+    std::string name = "null";
     std::string email = "";
     int chat_id = 0;
     int offset = 0;
