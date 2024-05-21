@@ -289,7 +289,9 @@ void DBManager::parseJson(std::string request)
 
 bool DBManager::checkLogin()
 {
-    return true;
+    if(checkLoginRequest() == "true")
+        return true;
+    return false;
 }
     
 std::string DBManager::JSON_to_string(const std::string& file_name){
