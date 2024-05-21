@@ -21,8 +21,7 @@ DBManager::DBManager()
 }
 
 DBManager::~DBManager(){
-    std::cout << "Disconnecting..." << std::endl;
-    std::cout << "DBManager_ID:" << c << std::endl;
+    std::cout << "Disconnecting..."  "DBManager_ID:" << c << std::endl;
     
     if(c != nullptr){ 
         c->close();
@@ -39,7 +38,6 @@ std::string DBManager::Request(std::string request)
     {
         case Register:		// 0
             answer = registerRequest();
-            std::cout << "registerRequest: " << login << " : " << password << std::endl;
             break;
         case getMessage:	// 1
             if(checkLogin())
@@ -66,7 +64,6 @@ std::string DBManager::Request(std::string request)
             }
             break;
         case Login:         // 5
-            std::cout << "Login request: " << login << " : " << password << std::endl;
             return checkLoginRequest();
 
             default:
@@ -110,8 +107,8 @@ std::string DBManager::getChats(){
 
 std::string DBManager::registerRequest()
 {
-    std::cout << "Starting receive process" << std::endl;
 
+    std::cout << "registerRequest: " << login << " : " << password << std::endl;
     try{
         std::string result = "err";
         pqxx::work w(*c);
@@ -172,15 +169,16 @@ std::string DBManager::getMessageRequest()
         w.commit();
         return result;
     }
-    catch(std::exception& e){
-        std::cout << "something wrong" << e.what() << std::endl;
+    catch(std::exception& e)
+    {
+        std::cerr << "something wrong" << e.what() << std::endl;
     }
     return "somethinig wrong";
 }
 
 std::string DBManager::createChat()
 {
-	std::cout << "Creating chat..." << std::endl;
+	std::cout << "Creating chat...    chat_id: " << chat_id << " member0: " << members[0] << " name: " << name << std::endl;
 	try{
 		pqxx::work w(*c);
 		std::string members_to_str = "";
@@ -192,13 +190,16 @@ std::string DBManager::createChat()
 		std::cout << members_to_str << std::endl;
 		w.exec("INSERT INTO chats(members, name) VALUES(ARRAY[ " + members_to_str + "], " + name + ");");
 		w.commit();
-	}catch(std::exception& e){}
+	}catch(std::exception& e)
+    {
+        std::cerr << "ОШИБКА createchat()" << e.what() << std::endl;
+    }
 	return "null";
 }
 
 std::string DBManager::checkLoginRequest()
 {
-    std::cout << "CheckLoginRequest:" << std::endl;
+    std::cout << "check Login request: " << login << " : " << password << std::endl;
     try{
         std::string result = "err";
         pqxx::work w(*c);
@@ -268,16 +269,22 @@ void DBManager::parseJson(std::string request)
             members.push_back(member.get<std::string>());
         }
         }
-    }catch(std::exception& e){}
+    }catch(std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
     
-    
-    std::cout << "Parsing completed" << std::endl;
-    std::cout << "Login: " << login << std::endl;
-    std::cout << "Password: " << password << std::endl;
-    std::cout << "Message: " << message << std::endl;
-    std::cout << "ChatID: " << chat_id << std::endl;
-    std::cout << "type: " << type << std::endl;
-    std::cout << "offset: " << offset << std::endl;
+
+    if(false)
+    {
+        std::cout << "Parsing completed" << std::endl;
+        std::cout << "Login: " << login << std::endl;
+        std::cout << "Password: " << password << std::endl;
+        std::cout << "Message: " << message << std::endl;
+        std::cout << "ChatID: " << chat_id << std::endl;
+        std::cout << "type: " << type << std::endl;
+        std::cout << "offset: " << offset << std::endl;
+    }
 }
 
 bool DBManager::checkLogin()

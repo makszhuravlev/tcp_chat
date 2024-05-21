@@ -4,14 +4,43 @@
 #include <memory>
 #include <thread>
 #include <string>
+#include "nlohmann/json.hpp"
 #include "../include/DBManager.hpp"
 
 using tcp = boost::asio::ip::tcp;
 
+
+
+std::string JSON_to_string(const std::string& file_name);
+
+struct ParceServerJson
+{
+	std::string ipAddress = "127.0.0.1";
+	unsigned short port = 8080;
+
+	ParceServerJson()
+	{
+		try{
+			std::string json_data = JSON_to_string("server_data/serveraddress.json"); 
+			Json serverJSON = Json::parse(json_data);
+			
+			ipAddress = serverJSON["ipAddress"].get<std::string>();
+			port = (int)serverJSON["port"];
+		}
+			catch(std::exception const &e){
+			std::cerr << "НЕ ПОЛУЧИЛОСЬ СПРАСИТЬ serveraddress.json "<< e.what() << std::endl;
+		}
+	}	
+};
+
+
 int main() {
     try {
-        auto const address = boost::asio::ip::make_address("127.0.0.1");
-        auto const port = static_cast<unsigned short>(std::atoi("8080"));
+
+		ParceServerJson parcedServerJson; 
+
+        auto const address = boost::asio::ip::make_address(parcedServerJson.ipAddress);
+        auto const port = parcedServerJson.port;
 
         boost::asio::io_context ioc{1};
 
@@ -37,14 +66,13 @@ int main() {
 							std::cout << message << std::endl;
 							std::string answer = ClientDB->Request(message);
 							buffer.clear();
-							//////АААААА НЕ ОТЧИЩАЕТСЧОМЯЧ БУФЕР БЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯТЬ ЗАЕБАЛО БЛТЬ СУКА НАХУУЙ
 							boost::beast::ostream(buffer) << answer;
 							ws.write(buffer.data());
-/*
+							/*
 							for (int i = 0; i < 100; i++) {
         						std::cout << boost::beast::buffers_to_string(buffer.data()) << std::endl;
 							}
-*/
+							*/
 						}
 						catch(boost::beast::system_error const& se){
 							if(se.code() != boost::beast::websocket::error::closed){
@@ -52,14 +80,12 @@ int main() {
 								break;
 							}
 						}
-		//				delete ClientDB;
 					}
 					delete ClientDB;
 				} 
           	}.detach();
 			}
 			catch(std::exception& e){}
-//delete ClientDB;
         }
 
     } catch (std::exception const& e) {
@@ -69,4 +95,23 @@ int main() {
 
     return EXIT_SUCCESS;
 }
+
+
+
+std::string JSON_to_string(const std::string& file_name){
+    std::ifstream file(file_name);
+    if (!file.is_open()) {
+        throw std::runtime_error("Failed to open file");
+    }
+
+    std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string jsonData = buffer.str();
+
+    return jsonData;
+}
+
+
+
+
 
