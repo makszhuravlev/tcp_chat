@@ -126,7 +126,13 @@ document.getElementById('messageInput').addEventListener('keydown', function(eve
         sendMessage();
     }
 });
-
+document.getElementById('chatinput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        console.log({"username":username,"password":password, type:3, "members":[username,  document.getElementById('chatinput').value.trim()]});
+        console.log()
+    }
+});
 window.onload = function() {
     loadChatList();
     loadChatMessages(currentChatId);

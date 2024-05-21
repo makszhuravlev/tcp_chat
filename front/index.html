@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мессенджер Презентация</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: #1a1b31;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #2e335a;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .navbar nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+
+        .navbar nav a:hover {
+            color: #7b61ff;
+        }
+
+        .landing {
+            width: 100%;
+            text-align: center;
+            padding-top: 100px;
+            padding-bottom: 50px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background-color: #2e335a;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #b0b0c3;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            border-radius: 10px;
+            background-color: #2e335a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .feature-item, .advantage-item, .plan-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #3c416f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-item:hover, .advantage-item:hover, .plan-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-item h3, .advantage-item h3, .plan-item h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .feature-item p, .advantage-item p, .plan-item p {
+            font-size: 1em;
+            color: #b0b0c3;
+        }
+
+        .subscribe {
+            padding: 40px 20px;
+            background-color: #2e335a;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .subscribe h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .subscribe form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .subscribe input {
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            color: #ffffff;
+            background-color: #4b4c72;
+            font-size: 1em;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .subscribe input:focus {
+            outline: none;
+        }
+
+        .subscribe button {
+            background-color: #7b61ff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+        }
+
+        .subscribe button:hover {
+            background-color: #6754d6;
+        }
+
+        .footer {
+            width: 100%;
+            padding: 20px;
+            background-color: #2e335a;
+            text-align: center;
+            color: #b0b0c3;
+            font-size: 0.9em;
+        }
+
+        @media (min-width: 768px) {
+            .section-content {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .navbar nav {
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Мессенджер</div>
+    </div>
+
+    <div class="landing">
+        <h1>Добро пожаловать в наш мессенджер</h1>
+       
+    </header>
+
+    <section id="features" class="section features">
+        <h2>Особенности</h2>
+        <div class="section-content">
+            <div class="feature-item">
+                <h3>Мгновенные сообщения</h3>
+                <p>Отправляйте и получайте сообщения мгновенно с нашими высокоскоростными серверами.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Безопасность</h3>
+                <p>Ваши данные защищены с использованием новейших технологий шифрования.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Простота использования</h3>
+                <p>Интуитивно понятный интерфейс, который легко освоить.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="advantages" class="section advantages">
+        <h2>Преимущества</h2>
+        <div class="section-content">
+            <div class="advantage-item">
+                <h3>Мультиплатформенность</h3>
+                <p>Наш мессенджер доступен на всех популярных платформах: Windows, MacOS, iOS и Android.</p>
+            </div>
+            <div class="advantage-item">
+                <h3>Групповые чаты</h3>
+                <p>Создавайте групповые чаты и общайтесь с несколькими друзьями одновременно.</p>
+            </div>
+            <div class="advantage-item">
+                <h3>Медиа обмен</h3>
+                <p>Легко отправляйте и получайте фотографии, видео и другие файлы.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="plans" class="section development-plans">
+        <h2>Планы развития</h2>
+        <div class="section-content">
+            <div class="plan-item">
+                <h3>Видеозвонки</h3>
+                <p>Скоро вы сможете совершать видеозвонки прямо через наш мессенджер.</p>
+            </div>
+            <div class="plan-item">
+                <h3>Боты и интеграции</h3>
+                <p>Мы планируем интеграцию с популярными сервисами и поддержку чат-ботов.</p>
+            </div>
+            <div class="plan-item">
+                <h3>Настройки приватности</h3>
+                <p>Расширенные настройки приватности для более гибкого управления вашей конфиденциальностью.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="subscribe" class="section subscribe">
+        <h2>Перейти в мессенджер</h2>
+        <form id="subscribeForm">
+           
+            <button type="submit">Перейти</button>
+        </form>
+    </section>
+</div>
+
+<footer class="footer">
+    &copy; 2024 Мессенджер. Все права защищены.
+</footer>
+</body>
+</html>
