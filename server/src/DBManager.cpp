@@ -188,7 +188,7 @@ std::string DBManager::createChat()
 		members_to_str.pop_back();
 		members_to_str.pop_back();
 		std::cout << members_to_str << std::endl;
-		w.exec("INSERT INTO chats(members, name) VALUES(ARRAY[ " + members_to_str + "], " + name + ");");
+		w.exec("INSERT INTO chats(members, name) VALUES(ARRAY[ " + members_to_str + "], '" + name + "');");
 		w.commit();
 	}catch(std::exception& e)
     {

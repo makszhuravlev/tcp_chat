@@ -136,7 +136,8 @@ document.getElementById('chatinput').addEventListener('keydown', function(event)
                 type: 3,
                 username: username,
                 password: password,
-                members:[username, document.getElementById('chatinput').value.trim()]
+                members:[username, document.getElementById('chatinput').value.trim()],
+                name:document.getElementById('chatinput').value.trim()
             };
             
             var jsonString = JSON.stringify(jsonData);
