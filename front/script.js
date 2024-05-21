@@ -128,7 +128,16 @@ document.getElementById('messageInput').addEventListener('keydown', function(eve
 });
 document.getElementById('chatinput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
-        var socket = new WebSocket('ws://localhost:8080');
+        sendReqNewChat();
+    }
+});
+
+document.getElementById('sendButtonChat').addEventListener('keydown', function(event) {
+        sendReqNewChat();
+});
+
+function sendReqNewChat(){
+    var socket = new WebSocket('ws://localhost:8080');
         socket.addEventListener('open', function (event) {
             console.log('Connected to WS Server');
             
@@ -137,7 +146,7 @@ document.getElementById('chatinput').addEventListener('keydown', function(event)
                 username: username,
                 password: password,
                 members:[username, document.getElementById('chatinput').value.trim()],
-                name:document.getElementById('chatinput').value.trim()
+                name:document.getElementById('chatinputName').value.trim()
             };
             
             var jsonString = JSON.stringify(jsonData);
@@ -154,8 +163,8 @@ document.getElementById('chatinput').addEventListener('keydown', function(event)
         });
         
         event.preventDefault();
-    }
-});
+}
+
 window.onload = function() {
     loadChatList();
     loadChatMessages(currentChatId);
