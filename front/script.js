@@ -7,26 +7,7 @@ let smski = null;
 var socket = new WebSocket('ws://217.197.240.93:8080');
 
 function startNonBlockingLoop() {
-    let currentChatId = null;
-        console.log('Connected to WS Server');
-        
-        var jsonData = {
-            type: 4,
-            username: username,
-            password: password
-        };
-        
-        var jsonString = JSON.stringify(jsonData);
-        
-        console.log("Sending:", jsonString);
-        socket.send(jsonString);
-
-        
-
-        socket.addEventListener('error', function (event) {
-            console.error('WebSocket error: ', event);
-            document.getElementById("error").textContent="Ошибка соединения с сервером";
-        });
+    
 
     // Use setInterval to call a function every 1000 milliseconds (1 second)
     const intervalId = setInterval(() => {
@@ -39,19 +20,32 @@ function startNonBlockingLoop() {
 }
 
 
-
-
 socket.addEventListener('open', function (event) {
+    loadChatList();
     const loopId = startNonBlockingLoop();
     });    
 function loadChatList() {
-
+    let currentChatId = null;
+    console.log('Connected to WS Server-');
+    
+    var jsonData = {
+        type: 4,
+        username: username,
+        password: password
+    };
+    
+    var jsonString = JSON.stringify(jsonData);
+    
+    console.log("Sending:", jsonString);
+    socket.send(jsonString);
     const chatListElement = document.getElementById('chatList');
     chatListElement.innerHTML = '';
     socket.addEventListener('message', function (event) {
         console.log('Message from server:', event.data);
-        const response = JSON.parse(event.data);
+        if (event.data != null){
+            const response = JSON.parse(event.data);
         chats = response;     
+        
         chats.forEach(chat => {
             const chatItem = document.createElement('div');
             chatItem.classList.add('chat-item');
@@ -77,21 +71,19 @@ function loadChatList() {
                 CURRCHID = chat.chat_id;
                 console.log(chat.chat_id);
                 
-                
-
             });
-    
             chatListElement.appendChild(chatItem);
+            
         });
-    });
-
-
-    
+        }
+        
+    });  
 }
+
 function loadChatMessages() {
     
 
-    console.log('Connected to WS Server');
+    console.log('--');
     
     var jsonData = {
         type: 1,
@@ -125,13 +117,7 @@ function loadChatMessages() {
     });
     
     scrollToBottom();
-    socket.addEventListener('error', function (event) {
-        console.error('WebSocket error: ', event);
-        document.getElementById("error").textContent="Ошибка соединения с сервером";
-    });
-    socket.addEventListener('close', function (event) {
-        console.log('WebSocket connection closed: ', event);
-    });
+
     
 }
 
@@ -141,7 +127,7 @@ function sendMessage() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
     if (message !== '') {
-        console.log('Connected to WS Server');
+        console.log('Connected to WS Server-----');
         
         var jsonData = {
             type: 2,
@@ -196,10 +182,7 @@ document.getElementById('chatinput').addEventListener('keydown', function(event)
 document.getElementById('sendButtonChat').addEventListener('click', sendReqNewChat);
 
 function sendReqNewChat(){
-
-        socket.addEventListener('open', function (event) {
-            console.log('Connected to WS Server');
-            
+    console.log("MAXXxaasd7hiy8ed hbjkl. edrrdfsv ");
             var jsonData = {
                 type: 3,
                 username: username,
@@ -220,16 +203,14 @@ function sendReqNewChat(){
                 document.getElementById("error").textContent="Ошибка соединения с сервером";
             });
             window.location.assign('main.html')
-        });
-        
         event.preventDefault();
         
     }
 
-window.onload = function() {
-    loadChatList();
-    loadChatMessages();
-};
+// window.onload = function() {
+//     loadChatList();
+//     loadChatMessages();
+// };
 
 document.getElementById('settingsButton').addEventListener('click', function() {
     document.getElementById('settingsModal').style.display = 'flex'; 
