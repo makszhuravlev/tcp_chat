@@ -96,7 +96,7 @@ function sendMessage() {
 
     if (message !== '') {
         const chat = chatData.find(c => c.id === currentChatId);
-
+        console.log(input)
         if (chat) {
             chat.messages.push({"sender": "sent", "text": message});
 
