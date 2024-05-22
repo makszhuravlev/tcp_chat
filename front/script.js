@@ -103,10 +103,10 @@ function sendMessage() {
         console.log('Connected to WS Server');
         
         var jsonData = {
-            type: 1,
+            type: 2,
             password:password,
             message: message,
-            chat_id: CURRCHID,
+            chatID: CURRCHID,
             username: username
         };
         
@@ -122,8 +122,23 @@ function sendMessage() {
             document.getElementById("error").textContent="Ошибка соединения с сервером";
         });
     });
-
-        const chat = chatData.find(c => c.id === currentChatId);
+        var socket = new WebSocket('ws://localhost:8080');
+        socket.addEventListener('open', function (event) {
+        console.log('Connected to WS Server');
+        
+        var jsonData = {
+            type: 1,
+            password:password,
+            chatID: CURRCHID,
+            username: username
+        };
+        
+        var jsonString = JSON.stringify(jsonData);
+        
+        console.log("Sending:", jsonString);
+        socket.send(jsonString);
+        console.log("-----++++++", event.data)
+        const chat = event.data.find(c => c.id === CURRCHID);
         if (chat) {
             chat.messages.push({"sender": "sent", "text": message});
 
@@ -137,6 +152,14 @@ function sendMessage() {
             
             scrollToBottom();
         }
+
+
+        socket.addEventListener('error', function (event) {
+            console.error('WebSocket error: ', event);
+            document.getElementById("error").textContent="Ошибка соединения с сервером";
+        });
+    });
+        
     }
 }
 
