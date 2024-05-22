@@ -1,0 +1,3 @@
+#define VERSION_MAJOR @server_VERSION_MAJOR@
+#define VERSION_MINOR @server_VERSION_MINOR@
+#define COMMIT_COUT @commit_count@

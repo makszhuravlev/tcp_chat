@@ -6,12 +6,14 @@
 #include <string>
 #include "nlohmann/json.hpp"
 #include "../include/DBManager.hpp"
+#include "version.h"
 
 using tcp = boost::asio::ip::tcp;
 
 
 
 std::string JSON_to_string(const std::string& file_name);
+inline void startMessage();
 
 struct ParceServerJson
 {
@@ -36,7 +38,7 @@ struct ParceServerJson
 
 int main() {
     try {
-
+		startMessage();
 		ParceServerJson parcedServerJson; 
 
         auto const address = boost::asio::ip::make_address(parcedServerJson.ipAddress);
@@ -112,6 +114,9 @@ std::string JSON_to_string(const std::string& file_name){
 }
 
 
-
+inline void startMessage()
+{
+	std::cout << "TCP SERVER BY CYBERCONNECT(c)  VERSION: "<< VERSION_MAJOR << '.' << VERSION_MINOR << '.' << COMMIT_COUT << std::endl;
+}
 
 
