@@ -153,29 +153,27 @@ std::string DBManager::getMessageRequest()
     std::cout << "Starting getting messages..." << std::endl;
     try{
         pqxx::work w(*c);
-        pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 LIMIT 1 OFFSET $2;", chat_id, offset);
+        pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 LIMIT 25 OFFSET $2;", chat_id, offset * 25);
         std::string result = "";
-        /*
         Json jsonMassive;
         for(auto row : chat_messages)
         {
             Json jsonmessage;
             //std::cout << row[0] << row[1] << row[2] << row[3] << std::endl;
             jsonmessage["content"] = row[0].c_str();
-            jsonmessage["chat_id"] = row[1].c_str();
-            jsonmessage["author_id"] = atoi(row[2].c_str());
+            jsonmessage["chat_id"] = atoi(row[1].c_str());
+            jsonmessage["author_id"] = row[2].c_str();
             jsonmessage["message_id"] = atoi(row[3].c_str());
             jsonMassive.push_back(jsonmessage);
         }
-        */
         //std::cout << jsonMassive.dump() << std::endl;
-        Json json_message;
+        /*Json json_message;
         json_message["content"] = chat_messages[0][0].c_str();
-        json_message["chat_id"] = chat_messages[0][1].c_str();
-        json_message["author_id"] = atoi(chat_messages[0][2].c_str());
+        json_message["chat_id"] = atoi(chat_messages[0][1].c_str());
+        json_message["author_id"] = chat_messages[0][2].c_str();
         json_message["message_id"] = atoi(chat_messages[0][3].c_str());
-        json_message["offset"] = offset;
-        result += json_message;
+        json_message["offset"] = offset;*/
+        result += jsonMassive.dump();
         std::cout << "r: " << result << std::endl;
         w.commit();
         return result;

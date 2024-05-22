@@ -69,7 +69,7 @@ int main() {
 							std::string answer = ClientDB->Request(message);
 							buffer.clear();
 							boost::beast::ostream(buffer) << answer;
-							std::cout << boost::beast::buffers_to_string(buffer.cdata())<< "buffffer"<<std::endl;
+							//std::cout << boost::beast::buffers_to_string(buffer.cdata())<< "buffffer"<<std::endl;
 							ws.write(buffer.data());
 							/*
 							for (int i = 0; i < 100; i++) {

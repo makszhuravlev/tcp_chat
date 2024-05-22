@@ -3,9 +3,9 @@ let password = sessionStorage.getItem('password');
 let CURRCHID = null;
 console.log(username, password);
 console.log(username, password);
+let smski = null;
 
-
-let currentChatId = 1;
+let currentChatId = null;
 var socket = new WebSocket('ws://localhost:8080');
         socket.addEventListener('open', function (event) {
         console.log('Connected to WS Server');
@@ -31,6 +31,7 @@ var socket = new WebSocket('ws://localhost:8080');
 
     
 function loadChatList() {
+
     const chatListElement = document.getElementById('chatList');
     chatListElement.innerHTML = '';
     socket.addEventListener('message', function (event) {
@@ -58,10 +59,12 @@ function loadChatList() {
     
             chatItem.addEventListener('click', () => {
                 currentChatId = chat.id;
-                loadChatMessages(currentChatId);
+                loadChatMessages();
                 CURRCHID = chat.chat_id;
                 console.log(chat.chat_id);
-                getmessage();
+                
+                
+
             });
     
             chatListElement.appendChild(chatItem);
@@ -71,16 +74,33 @@ function loadChatList() {
 
     
 }
-function loadChatMessages(chatId) {
+function loadChatMessages() {
+    
     var socket = new WebSocket('ws://localhost:8080');
+    socket.addEventListener('open', function (event) {
+    console.log('Connected to WS Server');
+    
+    var jsonData = {
+        type: 1,
+        password:password,
+        chatID: CURRCHID,
+        username: username
+    };
+    
+    
+    var jsonString = JSON.stringify(jsonData);
+    
+    console.log("Sending:", jsonString);
+    socket.send(jsonString);
+});
     socket.addEventListener('message', function (event) {
-        console.log('Message from server ', event.data);
-        const response = event.data;
-        response.forEach(message => {
-            console.log(message.content);
+        const messagesElement = document.getElementById('messages');
+        messagesElement.innerHTML = '';
+        JSON.parse(event.data).forEach(element => {
             const messageContainer = document.createElement('div');
-            messageContainer.textContent = message.content;
-            if (message.author_id === username) {
+            messageContainer.textContent = element["content"];
+            if (element["author_id"] === username) {
+                console.log(11)
                 messageContainer.classList.add('message', 'message-sent');
             } else{
                 messageContainer.classList.add('message', 'message-received');
@@ -92,7 +112,19 @@ function loadChatMessages(chatId) {
     });
 
     scrollToBottom();
+    socket.addEventListener('error', function (event) {
+        console.error('WebSocket error: ', event);
+        document.getElementById("error").textContent="Ошибка соединения с сервером";
+    });
+  
 }
+
+    
+    
+
+    
+        
+
 
 function sendMessage() {
     const input = document.getElementById('messageInput');
@@ -115,7 +147,6 @@ function sendMessage() {
         
         console.log("Sending:", jsonString);
         socket.send(jsonString);
-        console.log("-----", event.data)
         
 
         socket.addEventListener('error', function (event) {
@@ -132,38 +163,14 @@ function sendMessage() {
         document.querySelector('.messages').appendChild(messageContainer);
         input.value = '';
         input.focus();
-        loadChatMessages(CURRCHID)
+
         scrollToBottom();
     });
 
 }
 }
 function getmessage(){
-    var socket = new WebSocket('ws://localhost:8080');
-    socket.addEventListener('open', function (event) {
-    console.log('Connected to WS Server');
-    
-    var jsonData = {
-        type: 1,
-        password:password,
-        chatID: CURRCHID,
-        username: username
-    };
-    
-    var jsonString = JSON.stringify(jsonData);
-    
-    console.log("Sending:", jsonString);
-    socket.send(jsonString);
-    console.log("-----++++++", event.data)
-    
-    
 
-
-    socket.addEventListener('error', function (event) {
-        console.error('WebSocket error: ', event);
-        document.getElementById("error").textContent="Ошибка соединения с сервером";
-    });
-});
     
 }
 
@@ -222,7 +229,7 @@ function sendReqNewChat(){
 
 window.onload = function() {
     loadChatList();
-    loadChatMessages(currentChatId);
+    loadChatMessages();
 };
 
 document.getElementById('settingsButton').addEventListener('click', function() {
