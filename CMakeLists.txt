@@ -1,12 +1,22 @@
 cmake_minimum_required(VERSION 3.21.3)
 
-project(server VERSION 1.0)
+project(server VERSION 1.0) 
 
 # Установка стандартов C++
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Конфигурирование версии
+
+execute_process(
+    COMMAND git rev-list --count HEAD
+    OUTPUT_VARIABLE commit_count
+)
+
+configure_file(version.h.in ${PROJECT_SOURCE_DIR}/version.h)
+
 # Пути для include файлов
+include_directories(${PROJECT_SOURCE_DIR})
 include_directories("server/include")
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -25,7 +35,7 @@ set(libpqxxdir "libpqxx-${LIBVERSION}")
 # Отключение сборки тестов
 set(SKIP_BUILD_TEST ON)
 
-# 
+# Отключение предупреждений
 set(CMAKE_CXX_FLAGS "-Wno-deprecated-declarations")
 
 # Настройка сборки статических библиотек
