@@ -104,7 +104,7 @@ function sendMessage() {
             type: 1,
             message: message,
             chat_id: null,
-            login: username
+            username: username
         };
         
         var jsonString = JSON.stringify(jsonData);
