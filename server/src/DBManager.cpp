@@ -172,8 +172,8 @@ std::string DBManager::getMessageRequest()
         Json json_message;
         json_message["content"] = chat_messages[0][0].c_str();
         json_message["chat_id"] = chat_messages[0][1].c_str();
-        json_message["author_id"] = chat_messages[0][2].c_str();
-        json_message["message_id"] = chat_messages[0][3].c_str();
+        json_message["author_id"] = atoi(chat_messages[0][2].c_str());
+        json_message["message_id"] = atoi(chat_messages[0][3].c_str());
         json_message["offset"] = offset;
         result += json_message;
         std::cout << "r: " << result << std::endl;
