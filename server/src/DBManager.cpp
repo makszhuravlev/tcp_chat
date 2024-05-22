@@ -70,7 +70,7 @@ std::string DBManager::Request(std::string request)
                 return "Инвалид-запрос;(";
                 break;
     }
-    std::cout<<answer;
+    //std::cout<<answer;
     return answer;
 
 }
@@ -141,11 +141,12 @@ std::string DBManager::sendMessageRequest()
 		std::cout << message << " " << login << " " << chat_id << std::endl;
 		w.exec_params("INSERT INTO messages(content, author_id, chat_id) VALUES($1, $2, $3);", message, login, chat_id);
 		w.commit();
+        return "true";
 	}
 	catch(const std::exception& e){
 		std::cerr << "Failed to send message: " << e.what() << std::endl;
-	}
-    return "NOT READY";
+        return "err";
+    }
     
 }
 std::string DBManager::getMessageRequest()
@@ -174,7 +175,7 @@ std::string DBManager::getMessageRequest()
         json_message["message_id"] = atoi(chat_messages[0][3].c_str());
         json_message["offset"] = offset;*/
         result += jsonMassive.dump();
-        std::cout << "r: " << result << std::endl;
+        //std::cout << "r: " << result << std::endl;
         w.commit();
         return result;
     }
