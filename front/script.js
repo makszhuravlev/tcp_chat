@@ -95,8 +95,32 @@ function sendMessage() {
     const message = input.value.trim();
 
     if (message !== '') {
+
+        var socket = new WebSocket('ws://localhost:8080');
+        socket.addEventListener('open', function (event) {
+        console.log('Connected to WS Server');
+        
+        var jsonData = {
+            type: 1,
+            message: message,
+            chat_id: null,
+            login: username
+        };
+        
+        var jsonString = JSON.stringify(jsonData);
+        
+        console.log("Sending:", jsonString);
+        socket.send(jsonString);
+
+        
+
+        socket.addEventListener('error', function (event) {
+            console.error('WebSocket error: ', event);
+            document.getElementById("error").textContent="Ошибка соединения с сервером";
+        });
+    });
+
         const chat = chatData.find(c => c.id === currentChatId);
-        console.log(input)
         if (chat) {
             chat.messages.push({"sender": "sent", "text": message});
 
