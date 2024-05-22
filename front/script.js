@@ -17,7 +17,7 @@ function startNonBlockingLoop() {
     return intervalId;
 }
 
-const loopId = startNonBlockingLoop();
+// const loopId = startNonBlockingLoop();
 
 
 
@@ -125,15 +125,18 @@ function loadChatMessages() {
 
             messagesElement.appendChild(messageContainer);
         });
-
+        
     });
-
+    
     scrollToBottom();
     socket.addEventListener('error', function (event) {
         console.error('WebSocket error: ', event);
         document.getElementById("error").textContent="Ошибка соединения с сервером";
     });
-  
+    socket.addEventListener('close', function (event) {
+        console.log('WebSocket connection closed: ', event);
+    });
+    
 }
 
     

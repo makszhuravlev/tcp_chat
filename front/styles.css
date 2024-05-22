@@ -195,9 +195,7 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.message-input button:hover {
-  background-color: #6754d6;
-}
+
 
 .message-input textarea {
   flex: 1;
@@ -233,6 +231,57 @@ body {
 .message-input textarea:focus {
   outline: none;
 }
+
+
+
+.chat-list ::-webkit-scrollbar {
+  width: 8px; /* ширина полосы прокрутки */
+}
+
+.chat-list ::-webkit-scrollbar-track {
+  background: #2e335a; /* цвет дорожки */
+}
+
+.chat-list ::-webkit-scrollbar-thumb {
+  background-color: #7b61ff; /* цвет самой полосы прокрутки */
+  border-radius: 10px;
+  border: 2px solid #2e335a;
+}
+
+/* Стилизация для Firefox */
+.chat-list  {
+  scrollbar-width: thin;
+  scrollbar-color: #7b61ff #2e335a;
+}
+.chat-list :focus {
+  outline: none;
+}
+
+
+
+.messages ::-webkit-scrollbar {
+  width: 8px; /* ширина полосы прокрутки */
+}
+
+.messages ::-webkit-scrollbar-track {
+  background: #2e335a; /* цвет дорожки */
+}
+
+.messages ::-webkit-scrollbar-thumb {
+  background-color: #7b61ff; /* цвет самой полосы прокрутки */
+  border-radius: 10px;
+  border: 2px solid #2e335a;
+}
+
+/* Стилизация для Firefox */
+.messages  {
+  scrollbar-width: thin;
+  scrollbar-color: #7b61ff #2e335a;
+}
+.messages :focus {
+  outline: none;
+}
+
 
 @media (max-width: 1024px) {
   .chat-list {
