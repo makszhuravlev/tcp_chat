@@ -102,6 +102,7 @@ function sendMessage() {
         
         var jsonData = {
             type: 1,
+            password:password,
             message: message,
             chat_id: null,
             username: username
