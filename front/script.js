@@ -40,6 +40,7 @@ function loadChatList() {
             const chatItem = document.createElement('div');
             chatItem.classList.add('chat-item');
             chatItem.setAttribute('data-chat-id', chat.chat_id);
+            console.log(chat.chat_id);
     
             const chatAvatar = document.createElement('div');
             chatAvatar.classList.add('chat-avatar');
