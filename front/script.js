@@ -1,5 +1,6 @@
 let username = sessionStorage.getItem('username');
 let password = sessionStorage.getItem('password');
+let CURRCHID = null;
 console.log(username, password);
 console.log(username, password);
 
@@ -40,7 +41,6 @@ function loadChatList() {
             const chatItem = document.createElement('div');
             chatItem.classList.add('chat-item');
             chatItem.setAttribute('data-chat-id', chat.chat_id);
-            console.log(chat.chat_id);
     
             const chatAvatar = document.createElement('div');
             chatAvatar.classList.add('chat-avatar');
@@ -59,6 +59,8 @@ function loadChatList() {
             chatItem.addEventListener('click', () => {
                 currentChatId = chat.id;
                 loadChatMessages(currentChatId);
+                CURRCHID = chat.chat_id;
+                console.log(chat.chat_id);
             });
     
             chatListElement.appendChild(chatItem);
@@ -94,8 +96,6 @@ function loadChatMessages(chatId) {
 function sendMessage() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
-    const chatid = document.getElementById('data-chat-id');
-    console.log(chatid);
     if (message !== '') {
 
         var socket = new WebSocket('ws://localhost:8080');
@@ -106,7 +106,7 @@ function sendMessage() {
             type: 1,
             password:password,
             message: message,
-            chat_id: chatid,
+            chat_id: CURRCHID,
             username: username
         };
         
@@ -114,7 +114,7 @@ function sendMessage() {
         
         console.log("Sending:", jsonString);
         socket.send(jsonString);
-        console.log(event.data)
+        console.log("-----", event.data)
         
 
         socket.addEventListener('error', function (event) {
