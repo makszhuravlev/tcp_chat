@@ -17,7 +17,7 @@ inline void startMessage();
 
 struct ParceServerJson
 {
-	std::string ipAddress = "127.0.0.1";
+	std::string ipAddress = "0.0.0.0";
 	unsigned short port = 8080;
 
 	ParceServerJson()
@@ -28,6 +28,7 @@ struct ParceServerJson
 			
 			ipAddress = serverJSON["ipAddress"].get<std::string>();
 			port = (int)serverJSON["port"];
+			std::cout << ipAddress << ":" << port << std::endl;
 		}
 			catch(std::exception const &e){
 			std::cerr << "НЕ ПОЛУЧИЛОСЬ СПРАСИТЬ serveraddress.json "<< e.what() << std::endl;
