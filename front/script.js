@@ -5,6 +5,22 @@ console.log(username, password);
 console.log(username, password);
 let smski = null;
 
+
+function startNonBlockingLoop() {
+    // Use setInterval to call a function every 1000 milliseconds (1 second)
+    const intervalId = setInterval(() => {
+        console.log('This runs every second without blocking the UI.');
+        loadChatMessages()
+        // Perform your operations here
+    }, 1000);
+
+    return intervalId;
+}
+
+const loopId = startNonBlockingLoop();
+
+
+
 let currentChatId = null;
 var socket = new WebSocket('ws://217.197.240.93:8080');
         socket.addEventListener('open', function (event) {
@@ -121,12 +137,6 @@ function loadChatMessages() {
 }
 
     
-    
-
-    
-        
-
-
 function sendMessage() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
