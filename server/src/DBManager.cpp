@@ -153,8 +153,9 @@ std::string DBManager::getMessageRequest()
     std::cout << "Starting getting messages..." << std::endl;
     try{
         pqxx::work w(*c);
-        pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 LIMIT 5 OFFSET $2;", chat_id, offset * 5);
+        pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 LIMIT 1 OFFSET $2;", chat_id, offset);
         std::string result = "";
+        /*
         Json jsonMassive;
         for(auto row : chat_messages)
         {
@@ -166,8 +167,15 @@ std::string DBManager::getMessageRequest()
             jsonmessage["message_id"] = atoi(row[3].c_str());
             jsonMassive.push_back(jsonmessage);
         }
+        */
         //std::cout << jsonMassive.dump() << std::endl;
-        result += jsonMassive.dump();
+        Json json_message;
+        json_message["content"] = chat_messages[0][0].c_str();
+        json_message["chat_id"] = chat_messages[0][1].c_str();
+        json_message["author_id"] = chat_messages[0][2].c_str();
+        json_message["message_id"] = chat_messages[0][3].c_str();
+        json_message["offset"] = offset;
+        result += json_message;
         std::cout << "r: " << result << std::endl;
         w.commit();
         return result;
