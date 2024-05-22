@@ -7,7 +7,7 @@ void DBManager::connect(){
         Json serverJSON = Json::parse(json_data);
         std::string connection_info = "host="+serverJSON["ipAddress"].get<std::string>()+" port="+std::to_string((int)serverJSON["port"])+" user="+serverJSON["username"].get<std::string>()+" password="+serverJSON["password"].get<std::string>()+" dbname="+serverJSON["database"].get<std::string>();
         c = new pqxx::connection(connection_info);
-        std::cout << "[SUCCESS] DBManager CONNECTED" << std::endl;
+        std::cout << "[SUCCESS] DBManager CONNECTED: " << c << std::endl;
     }
         catch(std::exception const &e){
         std::cerr << e.what() << std::endl;
@@ -211,6 +211,7 @@ std::string DBManager::checkLoginRequest()
     std::cout << "check Login request: " << login << " : " << password << std::endl;
     try{
         std::string result = "err";
+        //std::cout << "C: " << c << std::endl;
         pqxx::work w(*c);
         pqxx::result result_query = w.exec("SELECT password FROM users WHERE login = '"+ login +"';");
         std:: cout << "---------" << result_query[0][0].c_str() << ":" << password << std::endl;

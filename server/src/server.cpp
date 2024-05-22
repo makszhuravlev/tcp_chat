@@ -55,11 +55,12 @@ int main() {
 			std::cout << "socket connected" << std::endl;
 			try{
 			std::thread{
-				[socket{std::move(socket)}](){
+				[socket{std::move(socket)}]() mutable{
 					boost::beast::websocket::stream<tcp::socket> ws {std::move(const_cast<tcp::socket&>(socket))};
-					DBManager* ClientDB = new DBManager();
 					ws.accept();
-					
+					DBManager* ClientDB = new DBManager();
+					//std::unique_ptr<DBManager> ClientDB = std::make_unique<DBManager>();
+					//auto ClientDB = std::move(ClientDB);
 					while(true){
 						try{
 							
@@ -70,13 +71,7 @@ int main() {
 							std::string answer = ClientDB->Request(message);
 							buffer.clear();
 							boost::beast::ostream(buffer) << answer;
-							//std::cout << boost::beast::buffers_to_string(buffer.cdata())<< "buffffer"<<std::endl;
 							ws.write(buffer.data());
-							/*
-							for (int i = 0; i < 100; i++) {
-        						std::cout << boost::beast::buffers_to_string(buffer.data()) << std::endl;
-							}
-							*/
 						}
 						catch(boost::beast::system_error const& se){
 							if(se.code() != boost::beast::websocket::error::closed){
@@ -88,6 +83,7 @@ int main() {
 					delete ClientDB;
 				} 
           	}.detach();
+			std::cout << "closing socket" << std::endl;
 			}
 			catch(std::exception& e){}
         }
