@@ -96,6 +96,7 @@ function loadChatMessages() {
     socket.addEventListener('message', function (event) {
         const messagesElement = document.getElementById('messages');
         messagesElement.innerHTML = '';
+        smski = JSON.parse(event.data)
         JSON.parse(event.data).forEach(element => {
             const messageContainer = document.createElement('div');
             messageContainer.textContent = element["content"];
@@ -147,14 +148,7 @@ function sendMessage() {
         
         console.log("Sending:", jsonString);
         socket.send(jsonString);
-        
-
-        socket.addEventListener('error', function (event) {
-            console.error('WebSocket error: ', event);
-            document.getElementById("error").textContent="Ошибка соединения с сервером";
-        });
-        const chat = CURRCHID
-        chat.messages.push({"sender": "sent", "text": message});
+        smski.messages.push({"sender": "sent", "text": message});
 
         const messageContainer = document.createElement('div');
         messageContainer.classList.add('message', 'message-sent', 'sent');
@@ -167,12 +161,17 @@ function sendMessage() {
         scrollToBottom();
     });
 
-}
-}
-function getmessage(){
+        socket.addEventListener('error', function (event) {
+            console.error('WebSocket error: ', event);
+            document.getElementById("error").textContent="Ошибка соединения с сервером";
 
-    
+        });
+        const chat = CURRCHID
+        
+
 }
+}
+
 
 
 function scrollToBottom() {
