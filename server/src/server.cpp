@@ -67,7 +67,7 @@ int main() {
 							boost::beast::flat_buffer buffer;
 							ws.read(buffer);
 							auto message = boost::beast::buffers_to_string(buffer.cdata());
-							std::cout << message << std::endl;
+							//std::cout << message << std::endl;
 							std::string answer = ClientDB->Request(message);
 							buffer.clear();
 							boost::beast::ostream(buffer) << answer;
