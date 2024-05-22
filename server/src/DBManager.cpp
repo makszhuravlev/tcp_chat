@@ -159,13 +159,16 @@ std::string DBManager::getMessageRequest()
         for(auto row : chat_messages)
         {
             Json jsonmessage;
+            //std::cout << row[0] << row[1] << row[2] << row[3] << std::endl;
             jsonmessage["content"] = row[0].c_str();
             jsonmessage["chat_id"] = row[1].c_str();
-            jsonmessage["author_id"] = std::stoi(row[2].c_str());
-            jsonmessage["message_id"] = std::stoi(row[3].c_str());
+            jsonmessage["author_id"] = atoi(row[2].c_str());
+            jsonmessage["message_id"] = atoi(row[3].c_str());
             jsonMassive.push_back(jsonmessage);
         }
+        //std::cout << jsonMassive.dump() << std::endl;
         result += jsonMassive.dump();
+        //std::cout << "r: " << result << std::endl;
         w.commit();
         return result;
     }
