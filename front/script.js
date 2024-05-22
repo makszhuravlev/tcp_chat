@@ -94,7 +94,8 @@ function loadChatMessages(chatId) {
 function sendMessage() {
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
-
+    const chatid = document.getElementById('data-chat-id');
+    console.log(chatid);
     if (message !== '') {
 
         var socket = new WebSocket('ws://localhost:8080');
@@ -105,7 +106,7 @@ function sendMessage() {
             type: 1,
             password:password,
             message: message,
-            chat_id: null,
+            chat_id: chatid,
             username: username
         };
         
