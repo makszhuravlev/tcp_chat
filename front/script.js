@@ -6,7 +6,7 @@ console.log(username, password);
 let smski = null;
 
 let currentChatId = null;
-var socket = new WebSocket('ws://localhost:8080');
+var socket = new WebSocket('ws://217.197.240.93:8080');
         socket.addEventListener('open', function (event) {
         console.log('Connected to WS Server');
         
@@ -76,7 +76,7 @@ function loadChatList() {
 }
 function loadChatMessages() {
     
-    var socket = new WebSocket('ws://localhost:8080');
+    var socket = new WebSocket('ws://217.197.240.93:8080');
     socket.addEventListener('open', function (event) {
     console.log('Connected to WS Server');
     
@@ -132,7 +132,7 @@ function sendMessage() {
     const message = input.value.trim();
     if (message !== '') {
 
-        var socket = new WebSocket('ws://localhost:8080');
+        var socket = new WebSocket('ws://217.197.240.93:8080');
         socket.addEventListener('open', function (event) {
         console.log('Connected to WS Server');
         
@@ -196,7 +196,7 @@ document.getElementById('chatinput').addEventListener('keydown', function(event)
 document.getElementById('sendButtonChat').addEventListener('click', sendReqNewChat);
 
 function sendReqNewChat(){
-    var socket = new WebSocket('ws://localhost:8080');
+    var socket = new WebSocket('ws://217.197.240.93:8080');
         socket.addEventListener('open', function (event) {
             console.log('Connected to WS Server');
             

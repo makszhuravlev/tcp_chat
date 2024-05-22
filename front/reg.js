@@ -8,7 +8,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     if (password !== confirmPassword) {
         errorMessage.textContent = 'Пароли не совпадают';
     } else {
-        var socket = new WebSocket('ws://localhost:8080');
+        var socket = new WebSocket('ws://217.197.240.93:8080');
 
         socket.addEventListener('open', function (event) {
 

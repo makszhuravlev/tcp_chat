@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     localStorage.setItem('username', username);
     localStorage.setItem('password', password);
     // формирование json
-        var socket = new WebSocket('ws://localhost:8080');
+        var socket = new WebSocket('ws://217.197.240.93:8080');
         socket.addEventListener('open', function (event) {
         console.log('Connected to WS Server');
         
