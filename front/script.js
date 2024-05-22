@@ -148,7 +148,6 @@ function sendMessage() {
         
         console.log("Sending:", jsonString);
         socket.send(jsonString);
-        smski.messages.push({"sender": "sent", "text": message});
 
         const messageContainer = document.createElement('div');
         messageContainer.classList.add('message', 'message-sent', 'sent');
@@ -157,7 +156,8 @@ function sendMessage() {
         document.querySelector('.messages').appendChild(messageContainer);
         input.value = '';
         input.focus();
-
+        document.getElementById('messageInput').value = '';
+        console.log("hui piska")
         scrollToBottom();
     });
 
