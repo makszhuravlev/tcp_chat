@@ -61,6 +61,7 @@ function loadChatList() {
                 loadChatMessages(currentChatId);
                 CURRCHID = chat.chat_id;
                 console.log(chat.chat_id);
+                getmessage();
             });
     
             chatListElement.appendChild(chatItem);
@@ -121,47 +122,51 @@ function sendMessage() {
             console.error('WebSocket error: ', event);
             document.getElementById("error").textContent="Ошибка соединения с сервером";
         });
+        const chat = CURRCHID
+        chat.messages.push({"sender": "sent", "text": message});
+
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message', 'message-sent', 'sent');
+        messageContainer.textContent = message;
+
+        document.querySelector('.messages').appendChild(messageContainer);
+        input.value = '';
+        input.focus();
+        loadChatMessages(CURRCHID)
+        scrollToBottom();
     });
-        var socket = new WebSocket('ws://localhost:8080');
-        socket.addEventListener('open', function (event) {
-        console.log('Connected to WS Server');
-        
-        var jsonData = {
-            type: 1,
-            password:password,
-            chatID: CURRCHID,
-            username: username
-        };
-        
-        var jsonString = JSON.stringify(jsonData);
-        
-        console.log("Sending:", jsonString);
-        socket.send(jsonString);
-        console.log("-----++++++", event.data)
-        const chat = event.data.find(c => c.id === CURRCHID);
-        if (chat) {
-            chat.messages.push({"sender": "sent", "text": message});
 
-            const messageContainer = document.createElement('div');
-            messageContainer.classList.add('message', 'message-sent', 'sent');
-            messageContainer.textContent = message;
-
-            document.querySelector('.messages').appendChild(messageContainer);
-            input.value = '';
-            input.focus();
-            
-            scrollToBottom();
-        }
-
-
-        socket.addEventListener('error', function (event) {
-            console.error('WebSocket error: ', event);
-            document.getElementById("error").textContent="Ошибка соединения с сервером";
-        });
-    });
-        
-    }
 }
+}
+function getmessage(){
+    var socket = new WebSocket('ws://localhost:8080');
+    socket.addEventListener('open', function (event) {
+    console.log('Connected to WS Server');
+    
+    var jsonData = {
+        type: 1,
+        password:password,
+        chatID: CURRCHID,
+        username: username
+    };
+    
+    var jsonString = JSON.stringify(jsonData);
+    
+    console.log("Sending:", jsonString);
+    socket.send(jsonString);
+    console.log("-----++++++", event.data)
+    
+    
+
+
+    socket.addEventListener('error', function (event) {
+        console.error('WebSocket error: ', event);
+        document.getElementById("error").textContent="Ошибка соединения с сервером";
+    });
+});
+    
+}
+
 
 function scrollToBottom() {
     const messagesElement = document.getElementById('messages');
