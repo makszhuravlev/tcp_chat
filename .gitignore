@@ -36,3 +36,7 @@
 build/*
 server/build/*
 client/build/*
+
+# Files
+
+version.h
