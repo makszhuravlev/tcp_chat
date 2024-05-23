@@ -2,8 +2,7 @@ let username = sessionStorage.getItem('username');
 let password = sessionStorage.getItem('password');
 let CURRCHID = 0;
 let CHATS = [];
-console.log(username, password);
-console.log(username, password);
+let LastMessId = 0;
 let smski = null;
 var socket = new WebSocket('ws://217.197.240.93:8080');
 
@@ -17,12 +16,7 @@ function startNonBlockingLoop() {
         };
         
         var jsonString = JSON.stringify(jsonData);
-        
-        console.log("Sending:", jsonString);
         socket.send(jsonString);
-
-        
-
         socket.addEventListener('error', function (event) {
             console.error('WebSocket error: ', event);
             document.getElementById("error").textContent="Ошибка соединения с сервером";
@@ -30,7 +24,6 @@ function startNonBlockingLoop() {
 
     // Use setInterval to call a function every 1000 milliseconds (1 second)
     const intervalId = setInterval(() => {
-        console.log('This runs every second without blocking the UI.');
         loadChatMessages()
         // Perform your operations here
     }, 1000);
@@ -51,14 +44,10 @@ function loadChatList() {
     
     socket.addEventListener('message', function (event) {
         
-        // console.log('Message from server:-----', event.data);
         const response = JSON.parse(event.data);
-        console.log("sss", response);
         if(response != true && response != null){
             chats = response;     
             chats.forEach(chat => {
-                
-                console.log("Check", CHATS);
                 if( !(CHATS.includes(chat.chat_id))){
                     const chatItem = document.createElement('div');
                     chatItem.classList.add('chat-item');
@@ -82,16 +71,15 @@ function loadChatList() {
                             currentChatId = chat.id;
                             loadChatMessages();
                             CURRCHID = chat.chat_id;
-                            console.log("Change" , chat.chat_id);
                         
                         
                     });
-            
+                    
                     chatListElement.appendChild(chatItem);
                 }
                 
             }); }
-        
+        LastMessId = 0;
     });
 
 
@@ -110,25 +98,28 @@ function loadChatMessages() {
     
     
     var jsonString = JSON.stringify(jsonData);
-    
-    console.log("Sending:", jsonString);
     socket.send(jsonString);
     socket.addEventListener('message', function (event) {
-        const messagesElement = document.getElementById('messages');
-        messagesElement.innerHTML = '';
-        console.log("NotJson", event.data);
-
+    const messagesElement = document.getElementById('messages');
         if(event.data != 'true' && event.data != 'null'){
-        JSON.parse(event.data).forEach(element => {
-            const messageContainer = document.createElement('div');
-            messageContainer.textContent = element["content"];
-            if (element["author_id"] === username) {
-                messageContainer.classList.add('message', 'message-sent');
-            } else{
-                messageContainer.classList.add('message', 'message-received');
+            if(LastMessId === 0){
+                
+                messagesElement.innerHTML = '';
             }
-
-            messagesElement.appendChild(messageContainer);
+        JSON.parse(event.data).forEach(element => {
+            if(element["message_id"]>LastMessId){
+                const messageContainer = document.createElement('div');
+                messageContainer.textContent = element["content"];
+                if (element["author_id"] === username) {
+                    messageContainer.classList.add('message', 'message-sent');
+                } else{
+                    messageContainer.classList.add('message', 'message-received');
+                }
+                LastMessId = element["message_id"];
+                
+                messagesElement.appendChild(messageContainer);
+            }
+            
         });
     }
     });
@@ -147,11 +138,9 @@ function loadChatMessages() {
 
     
 function sendMessage() {
-    console.log("Check;;;");
     const input = document.getElementById('messageInput');
     const message = input.value.trim();
     if (message !== '') {
-        console.log('Connected to WS Server');
         
         var jsonData = {
             type: 2,
@@ -163,7 +152,6 @@ function sendMessage() {
         
         var jsonString = JSON.stringify(jsonData);
         
-        console.log("Sending:", jsonString);
         socket.send(jsonString);
 
         const messageContainer = document.createElement('div');
@@ -174,11 +162,8 @@ function sendMessage() {
         input.value = '';
         input.focus();
         document.getElementById('messageInput').value = '';
-        console.log("hui piska")
         scrollToBottom();
         const chat = CURRCHID
-        
-
 }
 }
 
@@ -216,12 +201,7 @@ function sendReqNewChat(){
             };
             
             var jsonString = JSON.stringify(jsonData);
-            
-            console.log("Sending:", jsonString);
             socket.send(jsonString);
-            console.log(event.data + "+++++++++++++")
-            
-    
             socket.addEventListener('error', function (event) {
                 console.error('WebSocket error: ', event);
                 document.getElementById("error").textContent="Ошибка соединения с сервером";
