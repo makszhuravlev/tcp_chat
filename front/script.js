@@ -6,6 +6,7 @@ let LastMessId = 0;
 let smski = null;
 var socket = new WebSocket('ws://217.197.240.93:8080');
 
+
 function startNonBlockingLoop() {
         console.log('Connected to WS Server');
         
@@ -149,12 +150,6 @@ function sendMessage() {
         var jsonString = JSON.stringify(jsonData);
         
         socket.send(jsonString);
-
-        const messageContainer = document.createElement('div');
-        messageContainer.classList.add('message', 'message-sent', 'sent');
-        messageContainer.textContent = message;
-
-        document.querySelector('.messages').appendChild(messageContainer);
         input.value = '';
         input.focus();
         document.getElementById('messageInput').value = '';
