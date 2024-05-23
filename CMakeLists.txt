@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21.3)
+cmake_minimum_required(VERSION 3.0.0)
 
 project(server VERSION 1.0) 
 
@@ -21,7 +21,7 @@ include_directories("server/include")
 include_directories(${Boost_INCLUDE_DIRS})
 
 # Поиск зависимостей
-find_package(PostgreSQL REQUIRED)
+#find_package(PostgreSQL REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
 
 # Добавление исходных файлов
