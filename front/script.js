@@ -21,11 +21,8 @@ function startNonBlockingLoop() {
             console.error('WebSocket error: ', event);
             document.getElementById("error").textContent="Ошибка соединения с сервером";
         });
-
-    // Use setInterval to call a function every 1000 milliseconds (1 second)
     const intervalId = setInterval(() => {
         loadChatMessages()
-        // Perform your operations here
     }, 1000);
 
     return intervalId;
@@ -67,19 +64,17 @@ function loadChatList() {
                     chatItem.appendChild(chatInfo);
                     
                     chatItem.addEventListener('click', () => {
-                        
-                            currentChatId = chat.id;
-                            loadChatMessages();
-                            CURRCHID = chat.chat_id;
-                        
-                        
+                        LastMessId = 0;
+                        currentChatId = chat.id;
+                        loadChatMessages();
+                        CURRCHID = chat.chat_id;
                     });
                     
                     chatListElement.appendChild(chatItem);
                 }
                 
             }); }
-        LastMessId = 0;
+
     });
 
 
@@ -103,28 +98,29 @@ function loadChatMessages() {
     const messagesElement = document.getElementById('messages');
         if(event.data != 'true' && event.data != 'null'){
             if(LastMessId === 0){
-                
                 messagesElement.innerHTML = '';
             }
-        JSON.parse(event.data).forEach(element => {
-            if(element["message_id"]>LastMessId){
-                const messageContainer = document.createElement('div');
-                messageContainer.textContent = element["content"];
-                if (element["author_id"] === username) {
-                    messageContainer.classList.add('message', 'message-sent');
-                } else{
-                    messageContainer.classList.add('message', 'message-received');
+            JSON.parse(event.data).forEach(element => {
+                console.log(element["message_id"], LastMessId);
+                console.log(element["message_id"]>LastMessId);
+                if(element["message_id"]>LastMessId){
+                    const messageContainer = document.createElement('div');
+                    messageContainer.textContent = element["content"];
+                    if (element["author_id"] === username) {
+                        messageContainer.classList.add('message', 'message-sent');
+                    } else{
+                        messageContainer.classList.add('message', 'message-received');
+                    }
+                    LastMessId = element["message_id"];
+                    messagesElement.appendChild(messageContainer);
+                    scrollToBottom();
                 }
-                LastMessId = element["message_id"];
-                
-                messagesElement.appendChild(messageContainer);
-            }
             
         });
     }
     });
 
-    scrollToBottom();
+    
 }
     socket.addEventListener('error', function (event) {
         console.error('WebSocket error: ', event);
