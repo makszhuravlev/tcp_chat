@@ -149,13 +149,22 @@ std::string DBManager::sendMessageRequest()
     }
     
 }
+
+void reverseJsonArray(nlohmann::json& jsonArray) {
+    int n = jsonArray.size();
+    for(int i = 0; i < n / 2; ++i) {
+        std::swap(jsonArray[i], jsonArray[n - i - 1]);
+    }
+}
+
 std::string DBManager::getMessageRequest()
 {   
     std::cout << "Starting getting messages..." << std::endl;
     try{
         pqxx::work w(*c);
-        pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 LIMIT 25 OFFSET $2;", chat_id, offset * 25);
-        std::string result = "";
+        //pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 LIMIT 25 OFFSET $2;", chat_id, offset * 25);
+        pqxx::result chat_messages = w.exec_params("SELECT content, chat_id, author_id, message_id FROM messages WHERE chat_id = $1 ORDER BY message_id DESC LIMIT 25 OFFSET $2;", chat_id, offset * 25);
+	std::string result = "";
         Json jsonMassive;
         for(auto row : chat_messages)
         {
@@ -167,6 +176,7 @@ std::string DBManager::getMessageRequest()
             jsonmessage["message_id"] = atoi(row[3].c_str());
             jsonMassive.push_back(jsonmessage);
         }
+	reverseJsonArray(jsonMassive);
         //std::cout << jsonMassive.dump() << std::endl;
         /*Json json_message;
         json_message["content"] = chat_messages[0][0].c_str();
@@ -212,21 +222,26 @@ std::string DBManager::checkLoginRequest()
     std::cout << "check Login request: " << login << " : " << password << std::endl;
     try{
         std::string result = "err";
-        //std::cout << "C: " << c << std::endl;
+        std::cout << "C: " << c << std::endl;
         pqxx::work w(*c);
+        //std::cout << "faf" << std::endl;
         pqxx::result result_query = w.exec("SELECT password FROM users WHERE login = '"+ login +"';");
-        std:: cout << "---------" << result_query[0][0].c_str() << ":" << password << std::endl;
-        if(result_query[0][0].c_str() == password) 
-        {
+        if(result_query.size() > 0){
+          if(result_query[0][0].c_str() == password) 
+          {
             std::cout << "password correct" << std::endl;
             w.commit();
             return "true";
-        }
-        else
-        {
+          }
+          else
+          {
             std::cout << "password not correct" << std::endl;
             w.commit();
             return "false";
+          }
+        }
+        else{
+          return "false";
         }
         
         
