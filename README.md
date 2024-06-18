@@ -24,7 +24,7 @@
 ```sh
 $ apt-get install g++ cmake libpq-dev #libboost-all-dev б
 ```
-Библиотеку boost нужно скомпилировать [самостоятельно](https://stackoverflow.com/questions/12578499/how-to-install-boost-on-ubuntu)
+Библиотеку boost для работы на OS astra linux нужно скомпилировать [самостоятельно](https://stackoverflow.com/questions/12578499/how-to-install-boost-on-ubuntu)
 
 Выполните сборку:
 ```sh
